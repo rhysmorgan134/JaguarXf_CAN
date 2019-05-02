@@ -1,0 +1,225 @@
+{
+	"modules": {
+		"integrateControlPanel": {
+			"id" : "0x2C8",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+				"0x04" : "skipForward",
+				"0x10" : "skipBackward"
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+				"0x7E" : "volumeUp",
+				"0x80" : "volumeDown"
+			}
+
+		},
+		"passengerDoor" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+		"climateSeat" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+		"tpms" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+		"nav" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+		"driversSeat" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+		"climateControl" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+		"touchScreen" : {
+			"id" : "??",
+			"byte0" : {
+
+			},
+			"byte1" : {
+
+			},
+			"byte2" : {
+
+			},
+			"byte3" : {
+
+			},
+			"byte4" : {
+
+			},
+			"byte5" : {
+
+			},
+			"byte6" : {
+
+			},
+			"byte7" : {
+			}
+
+		},
+
+	}
+}
