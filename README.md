@@ -2,6 +2,8 @@
 
 Project to track the decoding of can bus messages, this is to allow custom control and data to/from the in car modules
 
+example of can messages being sent [XF CAN example](https://www.youtube.com/watch?v=0JXvSSPYgT0)
+
 ## Hardware
 
 * [RaspberryPi](https://www.amazon.co.uk/gp/product/B07BDR5PDW/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B07BDR5PDW&linkCode=as2&tag=rhysmorgan134-21&linkId=d3404d6b50251166481d1b5ee8acb8a8)
