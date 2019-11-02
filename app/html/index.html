@@ -1,94 +1,95 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=font1|font2|etc" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../node_modules/material-design-icons/iconfont/material-icons.css" rel="stylesheet">
-<style>
-@import '~material-design-icons/iconfont/material-icons.css';
-
-.btn-group {
-	display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-}
-
-.buttonParent {
-	display: flex;
-    flex-direction: row;
+    <link href="./main.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
     
-}
+    
+    <!-- <script>var socket = io();</script> -->
 
-.skipButton {
-	flex-grow: 1;
-}
+</head>
 
-.topRow {
-	display: flex;
-    flex-grow: 1;
-    justify-content: space-around;
-}
-
-.leftRoot {
-	display: flex;
-	flex-direction: column;
-}
-
-.lowerButtons {
-    flex-direction: row;
-	margin-top: 10px;
-}
-
-</style>
-<body>
-<h1>Button Group</h1>
-<div class=newButton>
-  <i class="material-icons">
-    skip_next
-    </i>
-</div>
-<div class="topRow">
-<div class="leftRoot">
-<div class="leftButtons buttonParent">
-  <div class="skip-group btn-group">
-    <button class="skipButton">skip back</button>
-    <button class="skipButton">source</button>
-  </div>
-  <div class="volume-group btn-group">
-    <button>volumeUp</button>
-    <button>power on</button>
-    <button>volumeDown</button>
-  </div>
-    <div class="skip-group btn-group">
-      <button class="skipButton">skip forward</button>
-      <button class="skipButton">music</button>
-    </div>
-</div>
-
-
-	<div class="lowerButtons">
-    	<button class="skipButton">defrost</button>
-    	<button class="skipButton">front heater</button>
-    	<button class="skipButton">rear heater</button>
+<body class='body'>
+    <div class="top">
+        <div class="buttonGroup">
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('skipP', event)"><i
+                        class="material-icons icon">skip_previous</i>Skip Backward</button>
+                <button class="buttonP" onclick="buttonPress('music')"><i
+                        class="material-icons">music_note</i>Audio<i></i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('volUp')"><i class="material-icons">volume_up</i></button>
+                <button class="buttonP" onclick="buttonPress('radioOn')"><i
+                        class="material-icons">power_settings_new</i></button>
+                <button class="buttonP" onclick="buttonPress('volDown')"><i
+                        class="material-icons">volume_down</i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonPe" onclick="buttonPress('skipF')">Skip Forward<i
+                        class="material-icons">skip_next</i></button>
+                <button class="buttonPe" onclick="buttonPress('source')">Source<i
+                        class="material-icons">art_track</i></button>
+            </div>
+        </div>
+        <div class="buttonGroup">
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('passUp')"><i
+                        class="material-icons md-48 red">keyboard_arrow_up</i></button>
+                <button class="buttonP" onclick="buttonPress('passDown')"><i
+                        class="material-icons md-48 blue">keyboard_arrow_down</i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('fanUp')"><i class="material-icons">keyboard_arrow_up</i><i
+                        class="material-icons">toys</i><i class="material-icons">keyboard_arrow_up</i></button>
+                <button class="buttonP" onclick="buttonPress('fanOn')"><i
+                        class="material-icons">power_settings_new</i></button>
+                <button class="buttonP" onclick="buttonPress('fanDown')"><i
+                        class="material-icons">keyboard_arrow_down</i><i class="material-icons">toys</i><i
+                        class="material-icons">keyboard_arrow_down</i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('driverUp')"><i
+                        class="material-icons md-48 red">keyboard_arrow_up</i></button>
+                <button class="buttonP" onclick="buttonPress('driverDown')"><i
+                        class="material-icons md-48 blue">keyboard_arrow_down</i></button>
+            </div>
+        </div>
     </div>
 
-</div>
-
-<div class="leftButtons buttonParent">
-  <div class="skip-group btn-group">
-    <button class="skipButton">temp up</button>
-    <button class="skipButton">temp down</button>
-  </div>
-  <div class="volume-group btn-group">
-    <button>fan up</button>
-    <button>climate on</button>
-    <button>fan down</button>
-  </div>
-    <div class="skip-group btn-group">
-      <button class="skipButton">temp up</button>
-      <button class="skipButton">temp down</button>
+    <div class="bottom">
+        <div class="buttonGroup">
+            <button class="buttonP" onclick="buttonPress('defrost', event)" ><img src='/img/defrost.png' height="48"
+                    width='48'></button>
+            <button class="buttonP frontHeater" onclick="buttonPress('frontHeater')"><img src='/img/defrost.png' height="48"
+                    width='48'></button>
+            <button class="buttonP" onclick="buttonPress('rearHeater')"><img src='/img/rear.png' height="40"
+                    width='40'></button>
+        </div>
+        <div class="buttonGroup">
+            <button class="buttonP largeText" onmousedown="buttonPress('auto')" onmouseup="buttonRel('auto')">AUTO</button>
+            <button class="buttonP divGlow" onclick="buttonPress('recirc')"><i
+                    class="material-icons md-48">360</i></button>
+        </div>
     </div>
-</div>
-</div>
-
-
+    <div class="indicators">
+        <div class="buttonGroup">
+            <div class="indicator defrost" id='defrost' onclick="buttonPress('defrost', event)"></div>
+            <div class="indicator frontHeater" id='frontHeater'></div>
+            <div class="indicator rearHeater" id='rearHeater'></div>
+        </div>
+        <div class="buttonGroup">
+                <div class="indicator auto"id='auto'></div>
+                <div class="indicator recirc"id='recirc'></div>
+        </div>
+    </div>
+    <script type='text/javascript' src='./app.js'></script>
 </body>
-</html>
 
+</html>

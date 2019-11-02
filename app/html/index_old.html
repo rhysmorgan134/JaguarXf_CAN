@@ -1,0 +1,94 @@
+<!Doctype html>
+<html>
+    <link href="../node_modules/material-design-icons/iconfont/material-icons.css" rel="stylesheet">
+<style>
+@import '~material-design-icons/iconfont/material-icons.css';
+
+.btn-group {
+	display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.buttonParent {
+	display: flex;
+    flex-direction: row;
+    
+}
+
+.skipButton {
+	flex-grow: 1;
+}
+
+.topRow {
+	display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+}
+
+.leftRoot {
+	display: flex;
+	flex-direction: column;
+}
+
+.lowerButtons {
+    flex-direction: row;
+	margin-top: 10px;
+}
+
+</style>
+<body>
+<h1>Button Group</h1>
+<div class=newButton>
+  <i class="material-icons">
+    skip_next
+    </i>
+</div>
+<div class="topRow">
+<div class="leftRoot">
+<div class="leftButtons buttonParent">
+  <div class="skip-group btn-group">
+    <button class="skipButton">skip back</button>
+    <button class="skipButton">source</button>
+  </div>
+  <div class="volume-group btn-group">
+    <button>volumeUp</button>
+    <button>power on</button>
+    <button>volumeDown</button>
+  </div>
+    <div class="skip-group btn-group">
+      <button class="skipButton">skip forward</button>
+      <button class="skipButton">music</button>
+    </div>
+</div>
+
+
+	<div class="lowerButtons">
+    	<button class="skipButton">defrost</button>
+    	<button class="skipButton">front heater</button>
+    	<button class="skipButton">rear heater</button>
+    </div>
+
+</div>
+
+<div class="leftButtons buttonParent">
+  <div class="skip-group btn-group">
+    <button class="skipButton">temp up</button>
+    <button class="skipButton">temp down</button>
+  </div>
+  <div class="volume-group btn-group">
+    <button>fan up</button>
+    <button>climate on</button>
+    <button>fan down</button>
+  </div>
+    <div class="skip-group btn-group">
+      <button class="skipButton">temp up</button>
+      <button class="skipButton">temp down</button>
+    </div>
+</div>
+</div>
+
+
+</body>
+</html>
+

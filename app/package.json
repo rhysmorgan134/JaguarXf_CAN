@@ -11,6 +11,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "material-design-icons": "^3.0.1",
-    "socket.io": "^2.3.0"
+    "nodemon": "^1.19.4",
+    "socket.io": "^2.3.0",
+    "socketcan": "^2.5.0"
   }
 }

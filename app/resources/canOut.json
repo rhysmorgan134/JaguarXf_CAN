@@ -1,0 +1,38 @@
+{
+    "source" : {
+        "byte" : 0,
+        "val": 0
+    },
+    "audio": {
+        "byte":0,
+        "val":0
+    },
+    "skipF": {
+        "byte":0,
+        "val":0
+    },
+    "skipP": {
+        "byte":0,
+        "val":0
+    },
+    "volUp": {
+        "byte":0,
+        "val":0
+    },
+    "volDown": {
+        "byte":0,
+        "val":0
+    },
+    "radioOn": {
+        "byte":0,
+        "val":0
+    },
+    "defrost": {
+        "byte":0,
+        "val":0
+    },
+    "auto": {
+        "byte":3,
+        "val":1
+    }
+}
