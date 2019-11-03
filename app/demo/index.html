@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=font1|font2|etc" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../node_modules/material-design-icons/iconfont/material-icons.css" rel="stylesheet">
+    <link href="./main.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    
+    
+    <!-- <script>var socket = io();</script> -->
+
+</head>
+
+<body class='body'>
+    <div class="top">
+        <div class="buttonGroup">
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('skipP', event)"><i
+                        class="material-icons icon">skip_previous</i>Skip Backward</button>
+                <button class="buttonP" onclick="buttonPress('music')"><i
+                        class="material-icons">music_note</i>Audio<i></i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('volUp')"><i class="material-icons">volume_up</i></button>
+                <button class="buttonP" onclick="buttonPress('radioOn')"><i
+                        class="material-icons">power_settings_new</i></button>
+                <button class="buttonP" onclick="buttonPress('volDown')"><i
+                        class="material-icons">volume_down</i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonPe" onclick="buttonPress('skipF')">Skip Forward<i
+                        class="material-icons">skip_next</i></button>
+                <button class="buttonPe" onclick="buttonPress('source')">Source<i
+                        class="material-icons">art_track</i></button>
+            </div>
+        </div>
+        <div class="buttonGroup">
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('passUp')"><i
+                        class="material-icons md-48 red">keyboard_arrow_up</i></button>
+                <button class="buttonP" onclick="buttonPress('passDown')"><i
+                        class="material-icons md-48 blue">keyboard_arrow_down</i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('fanUp')"><i class="material-icons">keyboard_arrow_up</i><i
+                        class="material-icons">toys</i><i class="material-icons">keyboard_arrow_up</i></button>
+                <button class="buttonP" onclick="buttonPress('fanOn')"><i
+                        class="material-icons">power_settings_new</i></button>
+                <button class="buttonP" onclick="buttonPress('fanDown')"><i
+                        class="material-icons">keyboard_arrow_down</i><i class="material-icons">toys</i><i
+                        class="material-icons">keyboard_arrow_down</i></button>
+            </div>
+            <div class="buttonStack">
+                <button class="buttonP" onclick="buttonPress('driverUp')"><i
+                        class="material-icons md-48 red">keyboard_arrow_up</i></button>
+                <button class="buttonP" onclick="buttonPress('driverDown')"><i
+                        class="material-icons md-48 blue">keyboard_arrow_down</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div class="buttonGroup">
+            <button class="buttonP" onclick="buttonPress('defrost', event)" ><img src='./img/defrost.png' height="48"
+                    width='48'></button>
+            <button class="buttonP frontHeater" onclick="buttonPress('frontHeater')"><img src='./img/defrost.png' height="48"
+                    width='48'></button>
+            <button class="buttonP" onclick="buttonPress('rearHeater')"><img src='./img/rear.png' height="40"
+                    width='40'></button>
+        </div>
+        <div class="buttonGroup">
+            <button class="buttonP largeText" onmousedown="buttonPress('auto')" onmouseup="buttonRel('auto')">AUTO</button>
+            <button class="buttonP divGlow" onclick="buttonPress('recirc')"><i class="material-icons md-48">loop</i></button>
+        </div>
+    </div>
+    <div class="indicators">
+        <div class="buttonGroup">
+            <div class="indicator defrost" id='defrost' onclick="buttonPress('defrost', event)"></div>
+            <div class="indicator frontHeater" id='frontHeater'></div>
+            <div class="indicator rearHeater" id='rearHeater'></div>
+        </div>
+        <div class="buttonGroup">
+                <div class="indicator auto"id='auto'></div>
+                <div class="indicator recirc"id='recirc'></div>
+        </div>
+    </div>
+    <script type='text/javascript' src='./app.js'></script>
+</body>
+
+</html>
