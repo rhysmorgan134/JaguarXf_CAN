@@ -1,16 +1,43 @@
-/* 
-    --primary-color: #9A97F3;
-    --secondary-color: #818cab;
-    --font-color: #e1e1ff;
-    --bg-color: #161625;
-    --heading-color: #818cab; */
-
 .body {
     background-color: #161625;
     color: #e1e1ff;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0px;
+}
+#temp {
+    color: #e1e1ff;
+}
+
+#cpu {
+    color: #e1e1ff;
+}
+
+.temperature {
+    display: flex;
+    background-color: #161625;
+    padding: 4px;
+    align-items: center;
+    border: outset;
+    border-color: #3484A9;
+    text-align: center;
+    justify-content: center;
+    border-radius: 79px 79px 79px 79px;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.infoTop {
+
+    display: flex;
+    padding: 5px;
+    border: outset;
+    background-color: #000000;
+    border-color: #3484A9;
 }
 
 #bText {
@@ -19,14 +46,15 @@
 }
 
 .buttonP {
-    flex-basis: 50px;
-    border-color: #000000;
+    flex-basis: 40px;
     display: flex;
+    color: #3484A9;
     flex-grow: 1;
+    border-color: #3484A9;
     align-items: center;
     text-align: center;
     justify-content: center;
-    background-color: #818CAB;
+    background-color: #000000;
 }
 
 .indicators {
@@ -40,7 +68,7 @@
     height: 10px;
     margin-left: 5px;
     margin-right: 5px;
-    background-color: #FF9933;
+    background-color: #161625;
     display: flex;
     flex-grow: 1;
     flex-shrink: 0;
@@ -52,12 +80,13 @@
 .buttonPe {
     flex-basis: 40px;
     display: flex;
+    color: #3484A9;
     flex-grow: 1;
-    border-color: #000000;
+    border-color: #3484A9;
     align-items: center;
     text-align: center;
     justify-content: center;
-    background-color: #818CAB;
+    background-color: #000000;
 }
 
 .buttonGroup {
@@ -69,6 +98,7 @@
     display: flex;
     flex-direction: column;
     flex-basis: 40%;
+    border-color: #3484A9;
 }
 
 .btn {
@@ -99,3 +129,34 @@
 
 .material-icons.md-48 { font-size: 48px; }
 
+.bottomRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.circle {
+    display: flex;
+    width:140px;
+    margin-top: 10px;
+    font-size: 15px;
+    height:140px;
+    border: outset;
+    border-color: #3484A9;
+    color: #3484A9;
+    border-radius: 50%;
+    background: #000000;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    padding: auto;
+}
+
+.tempText {
+    height: 80px;
+    width: 80px;
+    font-size: 20px;
+    line-height: 80px;
+    border-radius: 50%;
+    border: solid;
+    border-color: white;
+}

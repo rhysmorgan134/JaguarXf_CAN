@@ -4,17 +4,24 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var can = require('socketcan');
 var fs = require("fs");
-
-
+var temp = require("pi-temperature");
+var Gpio = require("onoff").Gpio
+var fan = new Gpio(17, 'out')
+var {exec} = require('child_process');
 //default array to use as the buffer to send can messages when no new changes
 var def = [203, 0, 0, 0, 0, 0, 127, 127]
-
+var tempCar = {}
+var info = {}
+var fanOn = fan.readSync()
 //message object which is used to send can message
 var msgOut = {
     'id': '2c8',
     'data': def
 
 }
+
+var brightness = 255
+exec("sudo sh -c 'echo " + '"' + brightness +'"' +" > /sys/class/backlight/rpi_backlight/brightness'")
 
 //read in config JSON files, canMap defines messages in, can out defines commands to send out
 var canIds = fs.readFileSync("./resources/canMap.json")
@@ -44,16 +51,29 @@ channel.addListener("onMessage", function(msg) {
         
         //loop though each byte defined in the json
         for(var k in canIds[strId]) {
-            console.log(k)
+           // console.log(k)
 
             //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
             for(i=0;i<canIds[strId][k].length;i++) {
                     indicators[canIds[strId][parseInt(k)][i.toString()].handle] = arr[parseInt(k)] & canIds[strId][parseInt(k)][i.toString()].val
-		console.log(indicators)            
+		//console.log(indicators)            
 }
-            
             // console.log(arr)
             // console.log(msg.data[k])
+        }
+        var passT = (arr[7] - 128) /2
+        var drivT = arr[6] /2
+        tempCar.passTempText = passT.toString() + '&#x2103'
+        tempCar.driverTempText = drivT.toString() + '&#x2103'
+    } else if (msg.id === 40) {
+        var arr = [...msg.data]
+        var newBrightness = arr[3]
+        if (newBrightness !== brightness) {
+            brightness = newBrightness        
+//		console.log("new brightness is " + brightness)            
+		if(brightness != 0) {
+		exec("sudo sh -c 'echo " + '"' + brightness +'"' +" > /sys/class/backlight/rpi_backlight/brightness'")
+    }
         }
     }
 } );
@@ -82,20 +102,33 @@ io.on('connection', function(client) {
             
             //create a copy of the defulat array
             var newD = def
-
-            //turn on the defined bit of the byte
-            newD[byte] |= value
-
+            if(data.type.includes("vol") || data.type.includes("fan")) {
+                newD[byte] = value
+            }else {
+                //turn on the defined bit of the byte
+                newD[byte] |= value
+            }
             //set the message out data array to the newly modified version
             msgOut.data = newD
             console.log("pressed ", newD)
         } else if(data.func === "rel") {
             //if button has been released clear the bit
             var newD = def
-            newD[byte] &= ~value
-            msgOut.data = newD
+            if("off" in outIds[data.type]) {
+                newD[byte] = outIds[data.type].off
+            } else {
+                newD[byte] &= ~value
+                msgOut.data = newD
+            }
+            
             console.log("released ", newD)
         }
+
+        var canMsg = {}
+        canMsg.id = 712
+        canMsg.data = new Buffer(msgOut.data)
+        channel.send(canMsg)
+        console.log(canMsg)
     })
     console.log('Client connected....');
 
@@ -105,19 +138,42 @@ io.on('connection', function(client) {
 setInterval(() => {
     //create output object for the canbus message
     var out = {}
+    
 
     //set the canbus id
     out.id = msgOut.id
 
     //emit the indicators object over sockets to the client
     io.emit('status',indicators);
-
+    
     //turn the canbus array to buffer object
     out.data = new Buffer(msgOut.data)
     // console.log(msgOut)
     // console.log(def)
-
+    
+    io.emit('temp', tempCar)
     //send the canbus message, commented out for now as not tested on vehicle
 //    channel.send(out)
     // console.log(out)
 }, 100)
+
+setInterval(() => {
+    temp.measure(function(err, temp) {
+        if (err) console.error(err);
+        else {
+            info['cpu'] = temp
+        }
+    });
+
+    if(info.cpu > 45 && fan.readSync() === 0) {
+        
+        console.log("fan coming on")
+        fan.writeSync(1)
+    } else if (info.cpu <42 && fan.readSync() === 1) {
+        console.log("fan going off")
+        fan.writeSync(0)
+        fanOn = 0
+    }
+
+    io.emit('info', info);
+}, 500)

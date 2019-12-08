@@ -1,4 +1,5 @@
-var socket = io.connect('http://localhost:3000')
+var socket = io.connect('http://192.168.0.92:3000')
+
 
 buttonPress = function(name, event) {
     socket.emit("action", {"type": name, "func":"pressed"})
@@ -10,9 +11,10 @@ buttonRel = function(name, event) {
 
 document.addEventListener("DOMContentLoaded", onDomReadyHandler);
 
+
+
 function onDomReadyHandler(event) {
     socket.on('status', (data) => {
-        console.log(data)
         for (var k in data) {
             if (data[k] > 0) {
                 console.log("led on")
@@ -23,4 +25,12 @@ function onDomReadyHandler(event) {
             }
         }
         })
-    }
+        socket.on('info', (data) => {
+            document.getElementById('cpu').innerHTML = data.cpu + "&#x2103"
+        })
+        socket.on('temp', (data) => {
+            for(var k in data) {
+                document.getElementById(k).innerHTML = data[k]
+            }
+        })
+    } 

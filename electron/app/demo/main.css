@@ -1,0 +1,101 @@
+/* 
+    --primary-color: #9A97F3;
+    --secondary-color: #818cab;
+    --font-color: #e1e1ff;
+    --bg-color: #161625;
+    --heading-color: #818cab; */
+
+.body {
+    background-color: #161625;
+    color: #e1e1ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#bText {
+    padding: 0;
+    margin: 0;
+}
+
+.buttonP {
+    flex-basis: 50px;
+    border-color: #000000;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: #818CAB;
+}
+
+.indicators {
+    display: flex;
+    flex-basis: 49%;
+    justify-content: space-between;
+}
+
+.indicator {
+    flex-basis: 50px;
+    height: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #161625;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-items: center;
+    text-align: center;
+    
+}
+
+.buttonPe {
+    flex-basis: 40px;
+    display: flex;
+    flex-grow: 1;
+    border-color: #000000;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: #818CAB;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-basis: 49%;
+}
+
+.buttonStack {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 40%;
+}
+
+.btn {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4%;
+}
+
+.largeText {
+    font-size: 1.6em;
+}
+
+.bottom {
+    margin-top: 2%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.material-icons.blue { color: #0E4D92; }
+
+.material-icons.red { color: #B22222; }
+
+.material-icons.md-48 { font-size: 48px; }
+
