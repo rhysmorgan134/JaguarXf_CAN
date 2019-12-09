@@ -16,17 +16,6 @@
 </head>
 
 <body class='body'>
-        <div class="infoTop">
-                <div class="temperature">
-                        <i class="material-icons" id='temp'>developer_board</i>
-                        <small id='cpu'></small>
-                </div>
-                <div class="temperature">
-                        <img src="img/engineTemp.png" id='eTemp' width='24px' height='24px'>
-                        <small id='eTempText'></small>
-                </div>
-                <button id='btn-min' class='temperature'>min</button>
-        </div>
         <div class="top">
                 <div class="buttonGroup">
                         <div class="buttonStack">
@@ -96,6 +85,23 @@
                 <p class="tempText" id="driverTempText">0.0</p>
         </div>
         </div>
+	<div class='spacerParent'>
+	<div class='spacer'>test</div>
+	</div>
+        <div class="infoTop">
+                <div class="temperature">
+                        <i class="material-icons" id='temp'>developer_board</i>
+                        <small id='cpu'></small>
+                </div>
+                <div class="temperature">
+                        <img src="img/engineTemp.png" id='eTemp' width='24px' height='24px'>
+                        <small id='eTempText'></small>
+                </div>
+                <button id='btn-min' class='temperature topBtn'>min</button>
+                <div class='spacer'></div>
+                <button id='btn-close' class='temperature topBtn'>close</button>
+        </div>
+
         <script type='text/javascript' src='./app.js'></script>
 </body>
 

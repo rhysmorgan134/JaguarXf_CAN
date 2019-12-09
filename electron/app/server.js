@@ -15,7 +15,7 @@ var info = {}
 var fanOn = fan.readSync()
 //message object which is used to send can message
 var msgOut = {
-    'id': '2c8',
+    'id': 712,
     'data': def
 
 }
@@ -128,8 +128,8 @@ io.on('connection', function(client) {
         var canMsg = {}
         canMsg.id = 712
         canMsg.data = new Buffer(msgOut.data)
-        // channel.send(canMsg)
-        // console.log(canMsg)
+       // channel.send(canMsg)
+       // console.log(canMsg)
     })
     console.log('Client connected....');
 
@@ -142,7 +142,7 @@ setInterval(() => {
     
 
     //set the canbus id
-    out.id = msgOut.id
+    out.id = 712
 
     //emit the indicators object over sockets to the client
     io.emit('status',indicators);
@@ -156,7 +156,7 @@ setInterval(() => {
     //send the canbus message, commented out for now as not tested on vehicle
     channel.send(out)
     console.log(out)
-}, 200)
+}, 100)
 
 setInterval(() => {
     temp.measure(function(err, temp) {

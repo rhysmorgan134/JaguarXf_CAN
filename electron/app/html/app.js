@@ -3,8 +3,14 @@ const remote = require('electron').remote;
 
 document.getElementById("btn-min").addEventListener("click", function (e) {
     var window = remote.getCurrentWindow();
-    window.minimize(); 
+     window.minimize();
 });
+
+document.getElementById("btn-close").addEventListener("click", function (e) {
+    var window = remote.getCurrentWindow();
+     window.close(); 
+});
+
 
 buttonPress = function(name, event) {
     socket.emit("action", {"type": name, "func":"pressed"})
