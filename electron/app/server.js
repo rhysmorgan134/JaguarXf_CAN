@@ -156,7 +156,7 @@ setInterval(() => {
     //send the canbus message, commented out for now as not tested on vehicle
     channel.send(out)
     console.log(out)
-}, 100)
+}, 200)
 
 setInterval(() => {
     temp.measure(function(err, temp) {

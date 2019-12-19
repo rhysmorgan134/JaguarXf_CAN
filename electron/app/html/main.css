@@ -1,18 +1,44 @@
 html {
-	height: 100%;
+    height: 100%;
+    display:flex;
+    flex-direction:column;
 }
 
-.body {
-    background-color: #161625;
-    color: #e1e1ff;
-	height: 100%;
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+body {
     display: flex;
+    flex-grow:1;
     flex-direction: column;
-    justify-content: center;
-    padding: 0px;
+    background-color: #000000;
+    /* height: 100%; */
+    padding-top: 30px;
+
 }
 #temp {
     color: #e1e1ff;
+}
+
+.resp {
+	max-width: 100%;
+	max-height: 230px;
+}
+
+button {
+    border: none;
+}
+
+.climate {
+    display:flex;
+    max-height: 300px;
+}
+
+.car {
+    flex-grow: 1;
+	align-content: center;
+	max-height:60%;
 }
 
 .topBtn {
@@ -32,12 +58,12 @@ html {
     background-color: #161625;
     padding: 4px;
     align-items: center;
-    border: outset;
-    border-color: #3484A9;
+    /* border: outset; */
+    /* border-color: #3484A9; */
     text-align: center;
     color: white;
     justify-content: center;
-    border-radius: 79px 79px 79px 79px;
+    /* border-radius: 79px 79px 79px 79px; */
     -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
@@ -47,25 +73,30 @@ html {
 
 .infoTop {
 	bottom: 0;
-	widt: 100%;
+	width: 100%;
     display: flex;
     padding: 5px;
-    border: outset;
+    margin-top:auto;
+    justify-content: stretch;
+    /* border: outset; */
     background-color: #000000;
-    border-color: #3484A9;
+    /* border-color: #3484A9; */
 }
 
 #bText {
     padding: 0;
     margin: 0;
 }
-
+.bottomButtons{
+    /* width: 80px; */
+    flex-grow:1;
+}
 .buttonP {
-    flex-basis: 40px;
+    /* flex-basis: 40px; */
     display: flex;
     color: #3484A9;
-    flex-grow: 1;
-    border-color: #3484A9;
+    /* flex-grow: 1; */
+    /* border-color: #3484A9; */
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -80,7 +111,9 @@ html {
 
 .indicator {
     flex-basis: 50px;
-    height: 10px;
+    height: 5px;
+    border: none;
+    border-radius: 12px;
     margin-left: 5px;
     margin-right: 5px;
     background-color: #161625;
@@ -97,7 +130,7 @@ html {
     display: flex;
     color: #3484A9;
     flex-grow: 1;
-    border-color: #3484A9;
+    /* border-color: #3484A9; */
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -111,9 +144,10 @@ html {
 
 .buttonStack {
     display: flex;
+    align-content: center;
     flex-direction: column;
     flex-basis: 40%;
-    border-color: #3484A9;
+    /* border-color: #3484A9; */
 }
 
 .btn {
@@ -152,13 +186,16 @@ html {
 .bottomRow {
     display: flex;
     justify-content: space-between;
-}
+} 
 
 .circle {
     display: flex;
+    margin-left: auto;
+    margin-right: auto;
     width:140px;
     margin-top: 10px;
-    font-size: 15px;
+    font-size: 30px;
+    font-weight: bold;
     height:140px;
     border: outset;
     border-color: #3484A9;
@@ -171,10 +208,17 @@ html {
     padding: auto;
 }
 
+.frontButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .tempText {
     height: 80px;
     width: 80px;
-    font-size: 20px;
+    font-size: 30px;
     line-height: 80px;
     border-radius: 50%;
     border: solid;
