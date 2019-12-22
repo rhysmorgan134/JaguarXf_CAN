@@ -26,5 +26,29 @@
                 "handle":"recirc"
             }
         ]
+    },
+    "40": {
+        "4": [
+            {
+                "val":0,
+                "handle":"Park"
+            },
+            {
+                "val":1,
+                "handle":"Reverse"
+            },
+            {
+                "val":2,
+                "handle":"Neutral"
+            },
+            {
+                "val":4,
+                "handle":"Drive"
+            },
+            {
+                "val":8,
+                "handle":"Sport"
+            }
+        ]
     }
 }
