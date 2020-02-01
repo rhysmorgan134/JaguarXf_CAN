@@ -20,6 +20,7 @@
     "onoff": "^5.0.0",
     "pi-temperature": "^2.1.0",
     "rpi-gpio": "^2.1.5",
+    "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
     "socketcan": "^2.5.0"
   },

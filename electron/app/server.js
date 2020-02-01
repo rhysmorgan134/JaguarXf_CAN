@@ -8,6 +8,24 @@ var temp = require("pi-temperature");
 var Gpio = require("onoff").Gpio
 var fan = new Gpio(17, 'out')
 var {exec} = require('child_process');
+var SerialPort = require('serialport');
+
+var serialPort = new SerialPort('/dev/ttyACM0', {
+    baudRate: 9600
+});
+
+serialPort.on('data', function (data) {
+    key =  parseInt(data.toString());
+	console.log(typeof (key));
+	if(key === 43) {
+	console.log("volume going up")
+} else if (key === '45') {
+	console.log("volume going down")
+} else {
+console.log("none")
+}
+});
+
 //default array to use as the buffer to send can messages when no new changes
 var def = [203, 0, 0, 0, 0, 0, 127, 127]
 var tempCar = {}
@@ -128,7 +146,7 @@ io.on('connection', function(client) {
         var canMsg = {}
         canMsg.id = 712
         canMsg.data = new Buffer(msgOut.data)
-       // channel.send(canMsg)
+        channel.send(canMsg)
        // console.log(canMsg)
     })
     console.log('Client connected....');
@@ -154,8 +172,8 @@ setInterval(() => {
     
     io.emit('temp', tempCar)
     //send the canbus message, commented out for now as not tested on vehicle
-    channel.send(out)
-    console.log(out)
+    //channel.send(out)
+    //console.log(out)
 }, 100)
 
 setInterval(() => {
