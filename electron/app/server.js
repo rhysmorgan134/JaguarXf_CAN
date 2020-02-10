@@ -9,11 +9,13 @@ var Gpio = require("onoff").Gpio
 var fan = new Gpio(17, 'out')
 var { exec } = require('child_process');
 var SerialPort = require('serialport');
-
+const Readline = require('@serialport/parser-readline')
+const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
+const home = new Gpio(27, 'in', 'rising', {debounceTimeout: 10});
 var serialPort = new SerialPort('/dev/ttyACM0', {
     baudRate: 9600
 });
-
+const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
 
 
 //default array to use as the buffer to send can messages when no new changes
@@ -47,28 +49,42 @@ console.log(canIds)
 
 //create can channel
 var channel = can.createRawChannel("can0", true);
-channel.setRxFilters = [{ id: 520, mask: 520 }, { id: 40, mask: 40 }, { id: 360, mask: 360 }]
+//channel.setRxFilters = [{ id: 520, mask: 520 }, { id: 40, mask: 40 }, { id: 360, mask: 360 }]
 
-serialPort.on('data', function (data) {
-    key = parseInt(data.toString());
+parser.on('data', function (data) {
+var msg = {}    
+key = parseInt(data.toString());
+	console.log(data.toString());
     msg.out = def
-    console.log(typeof (key));
-    if (key === 43) {
+    //console.log(typeof (key));
+    if (key === 20) {
+	console.log(43)
         var canMsg = {}
         canMsg.id = 712
         msg.out[7] = 128
         canMsg.data = new Buffer(msgOut.data)
         channel.send(canMsg)
-    } else if (key === '45') {
+    } else if (key === 40) {
+	console.log(45)
         var canMsg = {}
         canMsg.id = 712
-        msg.out[7] = 126
+        msg.out[7] = 128
         canMsg.data = new Buffer(msgOut.data)
         channel.send(canMsg)
     } else {
         console.log("none")
+//	console.log(key)
     }
 });
+
+power.watch((err, value) => {
+	exec("sudo shutdown -h now")
+})
+
+home.watch((err, value) => {
+	console.log("Home pressed");	
+})
+
 
 // create listener for all can bus messages
 channel.addListener("onMessage", function (msg) {
@@ -104,7 +120,7 @@ channel.addListener("onMessage", function (msg) {
             brightness = newBrightness          
             if (brightness != 0) {
                 var adjustedBrightness = brightness / 255
-                adjustedBrightness = Math.floor((adjustedBrightness * 100) + 50)
+                adjustedBrightness = Math.floor((adjustedBrightness * 100) + 20)
                 exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
         }
@@ -116,7 +132,7 @@ channel.addListener("onMessage", function (msg) {
                 staticAmb = newAmb
                 var amb = 255 - arr[3]
                 var perc = amb / 255
-                var adjustedBrightness = Math.floor(per * 100) + 100
+                var adjustedBrightness = Math.floor(perc * 100) + 150
                 exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
         }
