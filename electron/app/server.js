@@ -52,24 +52,24 @@ var channel = can.createRawChannel("can0", true);
 //channel.setRxFilters = [{ id: 520, mask: 520 }, { id: 40, mask: 40 }, { id: 360, mask: 360 }]
 
 parser.on('data', function (data) {
-var msg = {}    
-key = parseInt(data.toString());
-	console.log(data.toString());
-    msg.out = def
+    key = parseInt(data.toString());
+    console.log(data.toString());
     //console.log(typeof (key));
     if (key === 20) {
 	console.log(43)
         var canMsg = {}
         canMsg.id = 712
-        msg.out[7] = 128
-        canMsg.data = new Buffer(msgOut.data)
+	var tempArr = def
+        tempArr[7] = 128
+        canMsg.data = new Buffer(tempArr)
         channel.send(canMsg)
     } else if (key === 40) {
 	console.log(45)
         var canMsg = {}
         canMsg.id = 712
-        msg.out[7] = 128
-        canMsg.data = new Buffer(msgOut.data)
+	var tempArr = def
+        tempArr[7] = 126
+        canMsg.data = new Buffer(tempArr)
         channel.send(canMsg)
     } else {
         console.log("none")

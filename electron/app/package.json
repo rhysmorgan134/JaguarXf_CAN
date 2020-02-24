@@ -9,8 +9,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron --no-sandbox .",
     "dist": "electron-builder",
-    "package": "electron-builder --linux AppImage --armv7l --publish never"
+    "package": "electron-builder --linux AppImage --armv7l --publish never && cp dist/jag-hu.AppImage ../../install/jag-hu.AppImage "
   },
+"build": {
+  "artifactName": "jag-hu.${ext}"
+},
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
