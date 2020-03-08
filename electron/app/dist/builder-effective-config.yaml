@@ -1,4 +1,5 @@
 directories:
   output: dist
   buildResources: build
+artifactName: 'jag-hu.${ext}'
 electronVersion: 6.1.5

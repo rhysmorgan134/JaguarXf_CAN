@@ -9,7 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron --no-sandbox .",
     "dist": "electron-builder",
-    "package": "electron-builder --linux AppImage --armv7l --publish never"
+    "package": "electron-builder --linux AppImage --armv7l --publish never && cp dist/jag-hu.AppImage ../../install/jag-hu.AppImage "
+  },
+  "build": {
+    "artifactName": "jag-hu.${ext}"
   },
   "license": "ISC",
   "dependencies": {
@@ -20,6 +23,7 @@
     "onoff": "^5.0.0",
     "pi-temperature": "^2.1.0",
     "rpi-gpio": "^2.1.5",
+    "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
     "socketcan": "^2.5.0"
   },
