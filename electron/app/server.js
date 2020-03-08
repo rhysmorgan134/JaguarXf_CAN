@@ -11,7 +11,7 @@ var { exec } = require('child_process');
 var SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
-const home = new Gpio(27, 'in', 'rising', {debounceTimeout: 10});
+const home = new Gpio(5, 'in', 'rising', {debounceTimeout: 10});
 var serialPort = new SerialPort('/dev/ttyACM0', {
     baudRate: 9600
 });
@@ -55,7 +55,7 @@ parser.on('data', function (data) {
     key = parseInt(data.toString());
     console.log(data.toString());
     //console.log(typeof (key));
-    if (key === 20) {
+    if (key === 43) {
 	console.log(43)
         var canMsg = {}
         canMsg.id = 712
@@ -63,13 +63,14 @@ parser.on('data', function (data) {
         tempArr[7] = 128
         canMsg.data = new Buffer(tempArr)
         channel.send(canMsg)
-    } else if (key === 40) {
+    } else if (key === 45) {
 	console.log(45)
         var canMsg = {}
         canMsg.id = 712
 	var tempArr = def
         tempArr[7] = 126
         canMsg.data = new Buffer(tempArr)
+	console.log("sent")
         channel.send(canMsg)
     } else {
         console.log("none")
@@ -82,7 +83,8 @@ power.watch((err, value) => {
 })
 
 home.watch((err, value) => {
-	console.log("Home pressed");	
+	console.log("Home pressed");
+	exec("/home/pi/Desktop/open.sh")	
 })
 
 
