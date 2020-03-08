@@ -1,4 +1,4 @@
-var socket = io.connect('localhost:3000')
+var socket = io.connect('192.168.0.92:3000')
 const remote = require('electron').remote;
 
 document.getElementById("btn-min").addEventListener("click", function (e) {
@@ -18,6 +18,10 @@ buttonPress = function(name, event) {
 
 buttonRel = function(name, event) {
     socket.emit("action", {"type": name, "func":"rel"})
+}
+
+loadUrl = function(name, event) {
+    location.href("localhost:3000/" + name)
 }
 
 document.addEventListener("DOMContentLoaded", onDomReadyHandler);
