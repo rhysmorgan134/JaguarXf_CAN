@@ -7,9 +7,21 @@ var fs = require("fs");
 var temp = require("pi-temperature");
 var Gpio = require("onoff").Gpio
 
+var fan = new Gpio(17, 'out')
 var { exec } = require('child_process');
+var SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline')
+const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
+const home = new Gpio(5, 'in', 'rising', {debounceTimeout: 10});
+var serialPort = new SerialPort('/dev/ttyACM0', {
+    baudRate: 9600
+});
+const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
+
+
 //default array to use as the buffer to send can messages when no new changes
 var def = [203, 0, 0, 0, 0, 0, 127, 127]
+var staticAmb = 255
 var tempCar = {}
 var info = {}
 //message object which is used to send can message
@@ -46,7 +58,45 @@ console.log(canIds)
 
 //create can channel
 var channel = can.createRawChannel("can0", true);
-channel.setRxFilters({id:520,mask:520},{id:40,mask:40})
+
+//channel.setRxFilters = [{ id: 520, mask: 520 }, { id: 40, mask: 40 }, { id: 360, mask: 360 }]
+
+parser.on('data', function (data) {
+    key = parseInt(data.toString());
+    console.log(data.toString());
+    //console.log(typeof (key));
+    if (key === 43) {
+	console.log(43)
+        var canMsg = {}
+        canMsg.id = 712
+	var tempArr = def
+        tempArr[7] = 128
+        canMsg.data = new Buffer(tempArr)
+        channel.send(canMsg)
+    } else if (key === 45) {
+	console.log(45)
+        var canMsg = {}
+        canMsg.id = 712
+	var tempArr = def
+        tempArr[7] = 126
+        canMsg.data = new Buffer(tempArr)
+	console.log("sent")
+        channel.send(canMsg)
+    } else {
+        console.log("none")
+//	console.log(key)
+    }
+});
+
+power.watch((err, value) => {
+	exec("sudo shutdown -h now")
+})
+
+home.watch((err, value) => {
+	console.log("Home pressed");
+	exec("/home/pi/Desktop/open.sh")	
+})
+
 
 // create listener for all can bus messages
 channel.addListener("onMessage", function (msg) {
@@ -79,18 +129,26 @@ channel.addListener("onMessage", function (msg) {
         var arr = [...msg.data]
         var newBrightness = arr[3]
         if (newBrightness !== brightness) {
-            brightness = newBrightness
-            //		console.log("new brightness is " + brightness)            
+            brightness = newBrightness          
             if (brightness != 0) {
-                night.write(1);
-                brightnessPer = brightness/254
-                brightness = (brightness - 100) * brightnessPer
-                exec("sudo sh -c 'echo " + '"' + brightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
-            } else {
-                night.write(2);
-                brightness = 255
+                var adjustedBrightness = brightness / 255
+                adjustedBrightness = Math.floor((adjustedBrightness * 100) + 20)
+                exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
         }
+    } else if (msg.id === 360) {
+        if(brightness === 0) {
+            var arr = [...msg.data]
+            var newAmb = arr[3]
+            if(staticAmb != newAmb) {
+                staticAmb = newAmb
+                var amb = 255 - arr[3]
+                var perc = amb / 255
+                var adjustedBrightness = Math.floor(perc * 100) + 150
+                exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
+            }
+        }
+
     }
 });
 
@@ -143,7 +201,8 @@ io.on('connection', function (client) {
         var canMsg = {}
         canMsg.id = 712
         canMsg.data = new Buffer(msgOut.data)
-        // channel.send(canMsg)
+        channel.send(canMsg)
+
         // console.log(canMsg)
     })
     console.log('Client connected....');
@@ -169,9 +228,10 @@ setInterval(() => {
 
     io.emit('temp', tempCar)
     //send the canbus message, commented out for now as not tested on vehicle
-    channel.send(out)
+    //channel.send(out)
     //console.log(out)
-}, 200)
+}, 100)
+
 
 setInterval(() => {
     temp.measure(function (err, temp) {
