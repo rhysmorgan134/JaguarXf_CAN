@@ -26,13 +26,21 @@
                     <button class="buttonP" onmousedown="buttonPress('passDown')" onmouseup="buttonRel('passDown')"
                         id="passUp"><i class="material-icons md-48 blue">keyboard_arrow_down</i></button>
                 </div>
+
+                <div class='buttndInd mid'>
+                    <div class="indicator defrost" id='auto'></div>
+                    <button style="min-height: 60px; min-width: 60px;" class="buttonP" onmousedown="buttonPress('auto')" onmouseup="buttonRel('auto')">AUTO</button>
+                    <div class="indicator rearHeater" id='rearHeater' style="margin-top: auto;"></div>
+                    <button class="buttonP" onmousedown="buttonPress('rearHeater')" onmouseup="buttonRel('rearHeater')"><img src='./img/rear.png?09112019' height="48"
+                                                                                                                             width='48'></button>
+                </div>
+
                 <div class='car'>
                     <div class='frontButtons'>
                         <div class='buttndInd'>
                             <div class="indicator defrost" id='defrost'></div>
                             <button class="buttonP" onmousedown="buttonPress('defrost')" onmouseup="buttonRel('defrost')"><img
                                 src='./img/defrost.png?09112019' height="48" width='48'></button>
-                            
                         </div>
                         <div class='buttndInd'>
                             <div class="indicator frontHeater" id='frontHeater'></div>
@@ -42,15 +50,20 @@
                         </div>
                     </div>
                     <img class='resp' src='./img/car.png'>
-                    <div class='frontButtons'>
-                        <div class='buttndInd'>
-                            <div class="indicator rearHeater" id='rearHeater'></div>
-                            <button class="buttonP" onmousedown="buttonPress('rearHeater')" onmouseup="buttonRel('rearHeater')"><img src='./img/rear.png?09112019' height="40"
-                                width='60'></button>
-                                
-                        </div>
-                    </div>
+<!--                    <div class='frontButtons'>-->
+<!--                        <div class='buttndInd'>-->
+<!--                            <div class="indicator rearHeater" id='rearHeater'></div>-->
+<!--                            <button class="buttonP" onmousedown="buttonPress('rearHeater')" onmouseup="buttonRel('rearHeater')"><img src='./img/rear.png?09112019' height="40"-->
+<!--                                width='60'></button>-->
+<!--                                -->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
+            <div class='buttndInd mid'>
+                <div class="indicator recirc" id='recirc'></div>
+                <button style="min-height: 60px; min-width: 60px;" class="buttonP" onmousedown="buttonPress('recirc')" onmouseup="buttonRel('recirc')"><i class="material-icons md-48">loop</i></button>
+                <button style="min-height: 60px; min-width: 60px;" class="buttonP" onmousedown="buttonPress('fanOn')" onmouseup="buttonRel('fanOn')"><i class="material-icons md-48">power_settings_new</i></button>
+            </div>
                 <div class="buttonStack">
                     <button class="buttonP" onmousedown="buttonPress('driverUp')" onmouseup="buttonRel('driverUp')"
                         id='driverUp'><i class="material-icons md-48 red">keyboard_arrow_up</i></button>

@@ -116,6 +116,7 @@ button {
     flex-shrink: 0;
     align-items: center;
     text-align: center;
+    margin-top: 5%
     
 }
 
@@ -236,4 +237,8 @@ button {
     border-radius: 50%;
     border: solid;
     border-color: white;
+}
+
+.mid {
+    margin: auto;
 }

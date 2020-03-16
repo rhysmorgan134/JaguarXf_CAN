@@ -165,20 +165,27 @@ channel.addListener("onMessage", function (msg) {
 
     } else if (msg.id === 968) {
         tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3) / 10.0;
-        data = msg.data.readUIntBE(3, 2)
-        val = data.toString(2)
-        length = val.length
-        start = length -9
-        mpg = parseInt(val.slice(start, length), 2) / 10.0
+        data = msg.data.readUIntBE(3, 2);
+        val = data.toString(2);
+        length = val.length;
+        start = length -9;
+        mpg = parseInt(val.slice(start, length), 2) / 10.0;
         //tripInfo.tripMpg.val = mpg
 	tripInfo.tripAvg.val = mpg;
     } else if (msg.id === 904) {
-        data = msg.data.readUIntBE(3, 2)
-        val = data.toString(2)
-        length = val.length
-        start = length -9
-        mpg = parseInt(val.slice(start, length), 2) / 10.0
+        data = msg.data.readUIntBE(3, 2);
+        val = data.toString(2);
+        length = val.length;
+        start = length -9;
+        mpg = parseInt(val.slice(start, length), 2) / 10.0;
         tripInfo.tripMpg.val = mpg
+    } else if (msg.id === 136) {
+        data = msg.data.readUIntBE(0, 2)
+        val = data.toString(2);
+        length = val.length;
+        start = length -9;
+        mpg = parseInt(val.slice(start, length), 2);
+        tripInfo.tripRange.val = mpg
     }
 });
 
