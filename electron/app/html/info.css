@@ -65,6 +65,9 @@ button {
 .infoCard {
     flex-grow: 1;
     margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     /*border: 1px solid red;*/
     color: #FFFFFF;
     background-color: rgba(52, 52, 77, 0.8);
@@ -89,4 +92,8 @@ button {
     border-right: solid 1px #3484A9;
     border-bottom: solid 1px #3484A9;
 
+}
+
+.data {
+    font-size: 20px;
 }

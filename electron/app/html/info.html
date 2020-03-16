@@ -18,15 +18,15 @@
 <body class='body'>
 <div class='info'>
     <div class="infoCard">
-        <div id="tripDistance"></div>
-        <div id="tripAVG"></div>
-        <div id="tripMpg"></div>
-        <div id="tripRange"></div>
+        <div class="data" id="tripDistance"></div>
+        <div class="data" id="tripAvg"></div>
+        <div class="data" id="tripMpg"></div>
+        <div class="data" id="tripRange"></div>
     </div>
     <div class="infoCard">
-        <div id="engineSpeed"></div>
-        <div id="engineRevs"></div>
-        <div id="engineTemp"></div>
+        <div class="data" id="engineSpeed"></div>
+        <div class="data" id="engineRevs"></div>
+        <div class="data" id="engineTemp"></div>
     </div>
     <div class="infoCard">
         spare
@@ -38,9 +38,11 @@
         <i class="material-icons" id='temp'>developer_board</i>
         <small id='cpu'></small>
     </div>
-    <button class="topBtn bottomButtons"><i class="material-icons icon">ac_unit</i></button>
+    <button class="topBtn bottomButtons"  onclick="loadUrl('')"><i class="material-icons icon">ac_unit</i></button>
     <button class="topBtn bottomButtons"><i class="material-icons icon">music_video</i></button>
     <button class="topBtn bottomButtons temperature"><i class="material-icons icon">directions_car</i></button>
+    <button id="btn-min" class="topBtn bottomButtons"><i class="material-icons icon">play_for_work</i></button>
+    <button id="btn-close" class="topBtn bottomButtons"><i class="material-icons icon">exit_to_app</i></button>
     <!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('skipP')" onmouseup="buttonRel('skipP')"><i class="material-icons icon">skip_previous</i>Prev</button>-->
     <!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('skipF')" onmouseup="buttonRel('skipF')">Next<i class="material-icons">skip_next</i></button>-->
     <!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('volDown')" onmouseup="buttonRel('volDown')"><i class="material-icons">volume_down</i></button>-->
@@ -48,6 +50,7 @@
     <!--                    <button id='btn-min' class='temperature topBtn  bottomButtons'>min</button>-->
     <!--                    <button id='btn-close' class='temperature topBtn  bottomButtons'>close</button>-->
 </div>
+<script type='text/javascript' src='./info.js'></script>
 </body>
 
 </html>

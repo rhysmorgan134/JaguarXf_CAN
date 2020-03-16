@@ -20,10 +20,32 @@ const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
 
 
 //default array to use as the buffer to send can messages when no new changes
-var def = [203, 0, 0, 0, 0, 0, 127, 127]
-var staticAmb = 255
-var tempCar = {}
-var info = {}
+var def = [203, 0, 0, 0, 0, 0, 127, 127];
+var staticAmb = 255;
+var tempCar = {};
+var info = {};
+var tripInfo = {
+    tripDistance: {
+        pre: 'Distance',
+        suf: 'Miles',
+        val: 0
+    },
+    tripAvg: {
+        pre: 'AVG Speed',
+        suf: 'MPH',
+        val: 0
+    },
+    tripMpg: {
+        pre: 'Fuel',
+        suf: 'MPG',
+        val: 0
+    },
+    tripRange: {
+        pre: 'Range',
+        suf: 'Miles',
+        val: 0
+    },
+};
 //message object which is used to send can message
 var msgOut = {
     'id': 712,
@@ -31,14 +53,6 @@ var msgOut = {
 
 }
 
-const night = new Gpio(17, 'out');
-night.write(1, err => { // Asynchronous write
-    if (err) {
-      throw err;
-    } else {
-        console.log("gpio activated")
-    }
-  });
 //console.log("bringing can up res: " + JSON.stringify(exec("sudo /sbin/ip link set can0 up type can bitrate 125000")))
 var brightness = 255
 exec("sudo sh -c 'echo " + '"' + brightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
@@ -149,6 +163,16 @@ channel.addListener("onMessage", function (msg) {
             }
         }
 
+    } else if (msg.id === 968) {
+        tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3);
+        tripInfo.tripAvg.val = msg.data.readUIntBE(4, 1)''
+    } else if (msg.id === 904) {
+        data = msg.data.readUIntBE(3, 2)
+        val = data.toString(2)
+        length = val.length
+        start = length -9
+        mpg = parseInt(val.slice(start, length), 2)
+        tripInfo.tripMpg.val = mpg
     }
 });
 
@@ -220,6 +244,8 @@ setInterval(() => {
 
     //emit the indicators object over sockets to the client
     io.emit('status', indicators);
+    console.log('emitting')
+    io.emit('trip', tripInfo);
 
     //turn the canbus array to buffer object
     out.data = new Buffer(msgOut.data)

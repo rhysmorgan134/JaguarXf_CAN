@@ -1,4 +1,4 @@
-var socket = io.connect('192.168.0.92:3000')
+var socket = io.connect('192.168.0.85:3000')
 const remote = require('electron').remote;
 
 document.getElementById("btn-min").addEventListener("click", function (e) {
@@ -8,7 +8,7 @@ document.getElementById("btn-min").addEventListener("click", function (e) {
 
 document.getElementById("btn-close").addEventListener("click", function (e) {
     var window = remote.getCurrentWindow();
-     window.close(); 
+     window.close();
 });
 
 
@@ -21,7 +21,7 @@ buttonRel = function(name, event) {
 }
 
 loadUrl = function(name, event) {
-    location.href("localhost:3000/" + name)
+    window.location.href = "/" + name
 }
 
 document.addEventListener("DOMContentLoaded", onDomReadyHandler);
@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", onDomReadyHandler);
 
 function onDomReadyHandler(event) {
     socket.on('status', (data) => {
+        console.log('data')
         for (var k in data) {
             if (data[k] > 0) {
                 console.log("led on")
