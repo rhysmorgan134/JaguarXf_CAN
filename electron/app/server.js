@@ -164,14 +164,20 @@ channel.addListener("onMessage", function (msg) {
         }
 
     } else if (msg.id === 968) {
-        tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3);
-        tripInfo.tripAvg.val = msg.data.readUIntBE(4, 1)''
+        tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3) / 10.0;
+        data = msg.data.readUIntBE(3, 2)
+        val = data.toString(2)
+        length = val.length
+        start = length -9
+        mpg = parseInt(val.slice(start, length), 2) / 10.0
+        //tripInfo.tripMpg.val = mpg
+	tripInfo.tripAvg.val = mpg;
     } else if (msg.id === 904) {
         data = msg.data.readUIntBE(3, 2)
         val = data.toString(2)
         length = val.length
         start = length -9
-        mpg = parseInt(val.slice(start, length), 2)
+        mpg = parseInt(val.slice(start, length), 2) / 10.0
         tripInfo.tripMpg.val = mpg
     }
 });
@@ -244,7 +250,7 @@ setInterval(() => {
 
     //emit the indicators object over sockets to the client
     io.emit('status', indicators);
-    console.log('emitting')
+    //console.log('emitting')
     io.emit('trip', tripInfo);
 
     //turn the canbus array to buffer object

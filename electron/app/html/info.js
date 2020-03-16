@@ -20,12 +20,8 @@ document.addEventListener("DOMContentLoaded", onDomReadyHandler);
 function onDomReadyHandler(event) {
     socket.on('trip', (data) => {
         for (var k in data) {
+console.log(k)
             document.getElementById(k).innerText =  data[k].pre + ": " + data[k].val + " " + data[k].suf
-        }
-    })
-    socket.on('temp', (data) => {
-        for(var k in data) {
-            document.getElementById(k).innerHTML = data[k]
         }
     })
 }

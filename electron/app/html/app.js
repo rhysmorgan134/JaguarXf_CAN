@@ -1,4 +1,4 @@
-var socket = io.connect('192.168.0.85:3000')
+var socket = io.connect('localhost:3000')
 const remote = require('electron').remote;
 
 document.getElementById("btn-min").addEventListener("click", function (e) {
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", onDomReadyHandler);
 
 function onDomReadyHandler(event) {
     socket.on('status', (data) => {
-        console.log('data')
+        //console.log('data')
         for (var k in data) {
             if (data[k] > 0) {
                 console.log("led on")
