@@ -27,7 +27,7 @@ body {
     display: flex;
     flex-grow:1;
     flex-direction: column;
-    background-color: #303030;
+    background-color: #202020;
     /* height: 100%; */
     padding-top: 30px;
     background-image: url("./img/engine.jpg");
@@ -66,7 +66,7 @@ button {
     justify-content: stretch;
     min-height: 60px;
     /* border: outset; */
-    background-color: #303030;
+    background-color: #202020;
     /* border-color: #3484A9; */
 }
 
@@ -90,7 +90,7 @@ button {
 
 .temperature {
     display: flex;
-    background-color: #303030;
+    background-color: #202020;
     padding: 4px;
     align-items: center;
     /* border: outset; */

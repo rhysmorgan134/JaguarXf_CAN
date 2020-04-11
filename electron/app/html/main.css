@@ -28,7 +28,7 @@ body {
     display: flex;
     flex-grow:1;
     flex-direction: column;
-    background-color: #303030;
+    background-color: #202020;
     /* height: 100%; */
     padding-top: 30px;
 
@@ -85,7 +85,7 @@ button {
     justify-content: stretch;
     min-height: 60px;
     /* border: outset; */
-    background-color: #303030;
+    background-color: #202020;
     /* border-color: #3484A9; */
 }
 
@@ -109,7 +109,7 @@ button {
     align-items: center;
     text-align: center;
     justify-content: center;
-    background-color: #303030;
+    background-color: #202020;
 }
 
 .indicators {
@@ -144,7 +144,7 @@ button {
     align-items: center;
     text-align: center;
     justify-content: center;
-    background-color: #303030;
+    background-color: #202020;
 }
 
 .buttonGroup {
@@ -211,7 +211,7 @@ button {
     border-color: #3484A9;
     color: #3484A9;
     border-radius: 50%;
-    background: #303030;
+    background: #202020;
     justify-content: center;
     text-align: center;
     align-items: center;
@@ -226,7 +226,7 @@ button {
 }
 .temperature {
     display: flex;
-    background-color: #303030;
+    background-color: #202020;
     padding: 4px;
     align-items: center;
     /* border: outset; */
