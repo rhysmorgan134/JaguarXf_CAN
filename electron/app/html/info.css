@@ -23,6 +23,7 @@ img {
     max-height: 100%;
 }
 body {
+    font-family: 'Montserrat', sans-serif;
     display: flex;
     flex-grow:1;
     flex-direction: column;
