@@ -62,7 +62,7 @@ button {
 .topBtn {
 	min-width: 80px;
     background-color: #121212;
-    border-top: solid 1px #3484A9;
+    border-top: solid 1px #ffffff;
 }
 
 .spacer {
@@ -86,7 +86,7 @@ button {
     min-height: 60px;
     /* border: outset; */
     background-color: #202020;
-    /* border-color: #3484A9; */
+    /* border-color: #ffffff; */
 }
 
 #bText {
@@ -97,15 +97,15 @@ button {
     /* width: 80px; */
     flex-grow:1;
     background-color: #121212;
-    border-top: solid 1px #3484A9;
+    border-top: solid 1px #ffffff;
     color: #FFFFFF;
 }
 .buttonP {
     /* flex-basis: 40px; */
     display: flex;
-    color: #3484A9;
+    color: #ffffff;
     /* flex-grow: 1; */
-    /* border-color: #3484A9; */
+    /* border-color: #ffffff; */
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -138,9 +138,9 @@ button {
 .buttonPe {
     flex-basis: 40px;
     display: flex;
-    color: #3484A9;
+    color: #ffffff;
     flex-grow: 1;
-    /* border-color: #3484A9; */
+    /* border-color: #ffffff; */
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -157,7 +157,7 @@ button {
     align-content: center;
     flex-direction: column;
     flex-basis: 40%;
-    /* border-color: #3484A9; */
+    /* border-color: #ffffff; */
 }
 
 .btn {
@@ -208,8 +208,8 @@ button {
     font-weight: bold;
     height:140px;
     border: outset;
-    border-color: #3484A9;
-    color: #3484A9;
+    border-color: #ffffff;
+    color: #ffffff;
     border-radius: 50%;
     background: #202020;
     justify-content: center;
@@ -230,7 +230,7 @@ button {
     padding: 4px;
     align-items: center;
     /* border: outset; */
-    /* border-color: #3484A9; */
+    /* border-color: #ffffff; */
     text-align: center;
     color: white;
     justify-content: center;
@@ -239,9 +239,9 @@ button {
     -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
-    border-left: solid 1px #3484A9;
-    border-right: solid 1px #3484A9;
-    border-bottom: solid 1px #3484A9;
+    border-left: solid 1px #ffffff;
+    border-right: solid 1px #ffffff;
+    border-bottom: solid 1px #ffffff;
 
 }
 .tempText {
