@@ -28,7 +28,7 @@ body {
     display: flex;
     flex-grow:1;
     flex-direction: column;
-    background-color: #000000;
+    background-color: #303030;
     /* height: 100%; */
     padding-top: 30px;
 
@@ -61,7 +61,7 @@ button {
 
 .topBtn {
 	min-width: 80px;
-    background-color: #161625;
+    background-color: #121212;
     border-top: solid 1px #3484A9;
 }
 
@@ -85,7 +85,7 @@ button {
     justify-content: stretch;
     min-height: 60px;
     /* border: outset; */
-    background-color: #000000;
+    background-color: #303030;
     /* border-color: #3484A9; */
 }
 
@@ -96,7 +96,7 @@ button {
 .bottomButtons{
     /* width: 80px; */
     flex-grow:1;
-    background-color: #161625;
+    background-color: #121212;
     border-top: solid 1px #3484A9;
     color: #FFFFFF;
 }
@@ -109,7 +109,7 @@ button {
     align-items: center;
     text-align: center;
     justify-content: center;
-    background-color: #000000;
+    background-color: #303030;
 }
 
 .indicators {
@@ -125,7 +125,7 @@ button {
     border-radius: 12px;
     margin-left: 5px;
     margin-right: 5px;
-    background-color: #161625;
+    background-color: #121212;
     display: flex;
     flex-grow: 1;
     flex-shrink: 0;
@@ -144,7 +144,7 @@ button {
     align-items: center;
     text-align: center;
     justify-content: center;
-    background-color: #000000;
+    background-color: #303030;
 }
 
 .buttonGroup {
@@ -211,7 +211,7 @@ button {
     border-color: #3484A9;
     color: #3484A9;
     border-radius: 50%;
-    background: #000000;
+    background: #303030;
     justify-content: center;
     text-align: center;
     align-items: center;
@@ -226,7 +226,7 @@ button {
 }
 .temperature {
     display: flex;
-    background-color: #000000;
+    background-color: #303030;
     padding: 4px;
     align-items: center;
     /* border: outset; */
