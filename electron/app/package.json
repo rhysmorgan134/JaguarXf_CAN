@@ -25,7 +25,8 @@
     "rpi-gpio": "^2.1.5",
     "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
-    "socketcan": "^2.5.0"
+    "socketcan": "^2.5.0",
+    "minimist": ">=1.2.3"
   },
   "devDependencies": {
     "electron-builder": "^21.1.5",
