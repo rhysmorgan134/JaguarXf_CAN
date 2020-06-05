@@ -50,5 +50,51 @@
                 "handle":"Sport"
             }
         ]
+    },
+    "680": {
+        "4":[
+            {
+                "val": 1,
+                "handle": "driveAway5"
+            },
+            {
+                "val": 2,
+                "handle": "driveAway10"
+            },
+            {
+                "val": 3,
+                "handle": "driveAway15"
+            },
+            {
+                "val": 64,
+                "handle": "passiveArming"
+            },
+            {
+                "val": 32,
+                "handle": "autoLock"
+            },
+            {
+                "val": 8,
+                "handle": "alarmSensors"
+            }
+        ],
+        "5":[
+            {
+                "val": 1,
+                "handle": "twoStageLock"
+            },
+            {
+                "val": 64,
+                "handle": "globalWindowsOpen"
+            },
+            {
+                "val": 32,
+                "handle": "globalWindowsClose"
+            },
+            {
+                "val": 8,
+                "handle": "mirrorFold"
+            }
+        ]
     }
 }
