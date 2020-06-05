@@ -55,45 +55,45 @@
         "4":[
             {
                 "val": 1,
-                "handle": "driveAway5"
+                "handle": "Drive_Away_Locking_5"
             },
             {
                 "val": 2,
-                "handle": "driveAway10"
+                "handle": "Drive_Away_Locking_10"
             },
             {
                 "val": 3,
-                "handle": "driveAway15"
+                "handle": "Drive_Away_Locking_15"
             },
             {
                 "val": 64,
-                "handle": "passiveArming"
+                "handle": "Passive_Arming"
             },
             {
                 "val": 32,
-                "handle": "autoLock"
+                "handle": "AutoLock"
             },
             {
                 "val": 8,
-                "handle": "alarmSensors"
+                "handle": "Alarm_Sensors"
             }
         ],
         "5":[
             {
                 "val": 1,
-                "handle": "twoStageLock"
+                "handle": "Two_Stage_Locking"
             },
             {
                 "val": 64,
-                "handle": "globalWindowsOpen"
+                "handle": "Global_Windows_Open"
             },
             {
                 "val": 32,
-                "handle": "globalWindowsClose"
+                "handle": "Global_Windows_Close"
             },
             {
                 "val": 8,
-                "handle": "mirrorFold"
+                "handle": "Mirror_Fold"
             }
         ]
     }

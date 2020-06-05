@@ -55,7 +55,8 @@ var msgOut = {
 }
 
 //console.log("bringing can up res: " + JSON.stringify(exec("sudo /sbin/ip link set can0 up type can bitrate 125000")))
-var brightness = 255
+var brightness = 255;
+var day = true;
 exec("sudo sh -c 'echo " + '"' + brightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
 
 //read in config JSON files, canMap defines messages in, can out defines commands to send out
@@ -157,11 +158,12 @@ channel.addListener("onMessage", function (msg) {
     } else if (msg.id === 360) {
         if(brightness === 0) {
             var arr = [...msg.data]
-            lights.write(1, err => { // Asynchronous write
-                if (err) {
-                    throw err;
-                }
-            });
+            if(day) {
+                lights.writeSync(1);
+                lights.writeSync(0);
+                day = false;
+            }
+
             var newAmb = arr[3]
             if(staticAmb != newAmb) {
                 staticAmb = newAmb
@@ -171,11 +173,12 @@ channel.addListener("onMessage", function (msg) {
                 exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
         } else {
-            lights.write(0, err => { // Asynchronous write
-                if (err) {
-                    throw err;
-                }
-            });
+            if(!day) {
+                lights.writeSync(1);
+                lights.writeSync(0);
+                day = false;
+            }
+
         }
 
     } else if (msg.id === 968) {
@@ -204,31 +207,27 @@ channel.addListener("onMessage", function (msg) {
     } else if (msg.id === 680) {
 
         //turn the id to string, so it can be used as the json object key
-        var strId = msg.id.toString()
+        var strId2 = msg.id.toString()
 
         //turn the message buffer to an array
-        var arr = [...msg.data]
+        var arr2 = [...msg.data]
 
         //loop though each byte defined in the json
-        for (var k in canIds[strId]) {
+        for (var k in canIds[strId2]) {
             // console.log(k)
 
             //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
-            for (i = 0; i < canIds[strId][k].length; i++) {
-                if(arr[parseInt(k)] & canIds[strId][parseInt(k)][i.toString()].val){
-                settings[canIds[strId][parseInt(k)][i.toString()].handle] = true;
+            for (i = 0; i < canIds[strId2][k].length; i++) {
+                if(arr2[parseInt(k)] & canIds[strId2][parseInt(k)][i.toString()].val){
+                settings[canIds[strId2][parseInt(k)][i.toString()].handle] = true;
             } else {
-		settings[canIds[strId][parseInt(k)][i.toString()].handle] = false
+		settings[canIds[strId2][parseInt(k)][i.toString()].handle] = false
 }
 console.log(settings)
 }
             // console.log(arr)
             // console.log(msg.data[k])
         }
-        var passT = (arr[7] - 128) / 2
-        var drivT = arr[6] / 2
-        tempCar.passTempText = passT.toString() + '&#x2103'
-        tempCar.driverTempText = drivT.toString() + '&#x2103'
     }
 });
 
@@ -302,6 +301,23 @@ setInterval(() => {
     io.emit('status', indicators);
     //console.log('emitting')
     io.emit('trip', tripInfo);
+
+    // io.emit('settings', settings);
+    var testSettings = {
+        test_1_2: true,
+        test2: true,
+        test3: false,
+        test4: true,
+        test5: true,
+        test6: true,
+        test7: false,
+        test8: true,
+        test9: true,
+        test10: true,
+        test11: false,
+        test12: true,
+    }
+    io.emit('settings', settings);
 
     //turn the canbus array to buffer object
     out.data = new Buffer(msgOut.data)
