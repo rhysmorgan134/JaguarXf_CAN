@@ -31,6 +31,7 @@ body {
     background-color: #202020;
     /* height: 100%; */
     padding-top: 30px;
+	overflow-x: hidden;
 
 }
 #temp {
@@ -86,6 +87,7 @@ button {
     min-height: 60px;
     /* border: outset; */
     background-color: #202020;
+overflow-y: hidden;
     /* border-color: #ffffff; */
 }
 
