@@ -13,7 +13,7 @@ var SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
 const home = new Gpio(5, 'in', 'rising', {debounceTimeout: 10});
-const lights = new Gpio(22, 'out', 'rising');
+const lights = new Gpio(22, 'out');
 var serialPort = new SerialPort('/dev/ttyACM0', {
     baudRate: 9600
 });
@@ -215,10 +215,13 @@ channel.addListener("onMessage", function (msg) {
 
             //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
             for (i = 0; i < canIds[strId][k].length; i++) {
-                if(arr[parseInt(k)] & canIds[strId][parseInt(k)][i.toString()].val)
+                if(arr[parseInt(k)] & canIds[strId][parseInt(k)][i.toString()].val){
                 settings[canIds[strId][parseInt(k)][i.toString()].handle] = true;
-                console.log(settings)
-            }
+            } else {
+		settings[canIds[strId][parseInt(k)][i.toString()].handle] = false
+}
+console.log(settings)
+}
             // console.log(arr)
             // console.log(msg.data[k])
         }
@@ -321,3 +324,4 @@ setInterval(() => {
     });
     io.emit('info', info);
 }, 500)
+
