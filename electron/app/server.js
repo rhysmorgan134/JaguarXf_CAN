@@ -13,6 +13,7 @@ var SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
 const home = new Gpio(5, 'in', 'rising', {debounceTimeout: 10});
+const lights = new Gpio(22, 'out', 'rising');
 var serialPort = new SerialPort('/dev/ttyACM0', {
     baudRate: 9600
 });
@@ -63,7 +64,10 @@ var canIds = fs.readFileSync(__dirname + "/resources/canMap.json")
 var outIds = fs.readFileSync(__dirname + "/resources/canOut.json")
 
 //create indicator object, this sends the status of all leds over the socket
-var indicators = {}
+var indicators = {};
+
+//create settings object
+var settings = {};
 
 //parse json objects
 canIds = JSON.parse(canIds)
@@ -153,6 +157,11 @@ channel.addListener("onMessage", function (msg) {
     } else if (msg.id === 360) {
         if(brightness === 0) {
             var arr = [...msg.data]
+            lights.write(1, err => { // Asynchronous write
+                if (err) {
+                    throw err;
+                }
+            });
             var newAmb = arr[3]
             if(staticAmb != newAmb) {
                 staticAmb = newAmb
@@ -161,6 +170,12 @@ channel.addListener("onMessage", function (msg) {
                 var adjustedBrightness = Math.floor(perc * 100) + 150
                 exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
+        } else {
+            lights.write(0, err => { // Asynchronous write
+                if (err) {
+                    throw err;
+                }
+            });
         }
 
     } else if (msg.id === 968) {
@@ -186,6 +201,31 @@ channel.addListener("onMessage", function (msg) {
         start = length -9;
         mpg = parseInt(val.slice(start, length), 2);
         tripInfo.tripRange.val = mpg
+    } else if (msg.id === 680) {
+
+        //turn the id to string, so it can be used as the json object key
+        var strId = msg.id.toString()
+
+        //turn the message buffer to an array
+        var arr = [...msg.data]
+
+        //loop though each byte defined in the json
+        for (var k in canIds[strId]) {
+            // console.log(k)
+
+            //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
+            for (i = 0; i < canIds[strId][k].length; i++) {
+                if(arr[parseInt(k)] & canIds[strId][parseInt(k)][i.toString()].val)
+                settings[canIds[strId][parseInt(k)][i.toString()].handle] = true;
+                console.log(settings)
+            }
+            // console.log(arr)
+            // console.log(msg.data[k])
+        }
+        var passT = (arr[7] - 128) / 2
+        var drivT = arr[6] / 2
+        tempCar.passTempText = passT.toString() + '&#x2103'
+        tempCar.driverTempText = drivT.toString() + '&#x2103'
     }
 });
 

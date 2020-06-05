@@ -33,10 +33,10 @@ function onDomReadyHandler(event) {
         //console.log('data')
         for (var k in data) {
             if (data[k] > 0) {
-                console.log("led on")
+                //console.log("led on")
                 document.getElementById(k).style.backgroundColor =  '#FF9933';
             } else {
-                console.log("led of")
+                //console.log("led of")
                 document.getElementById(k).style.backgroundColor =  '#161625';
             }
         }
