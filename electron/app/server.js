@@ -6,12 +6,14 @@ var can = require('socketcan');
 var fs = require("fs");
 var temp = require("pi-temperature");
 var Gpio = require("onoff").Gpio
+
 var fan = new Gpio(17, 'out')
 var { exec } = require('child_process');
 var SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
 const home = new Gpio(5, 'in', 'rising', {debounceTimeout: 10});
+const lights = new Gpio(22, 'out');
 var serialPort = new SerialPort('/dev/ttyACM0', {
     baudRate: 9600
 });
@@ -19,19 +21,42 @@ const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
 
 
 //default array to use as the buffer to send can messages when no new changes
-var def = [203, 0, 0, 0, 0, 0, 127, 127]
-var staticAmb = 255
-var tempCar = {}
-var info = {}
-var fanOn = fan.readSync()
+var def = [203, 0, 0, 0, 0, 0, 127, 127];
+var staticAmb = 255;
+var tempCar = {};
+var info = {};
+var tripInfo = {
+    tripDistance: {
+        pre: 'Distance',
+        suf: 'Miles',
+        val: 0
+    },
+    tripAvg: {
+        pre: 'AVG Speed',
+        suf: 'MPH',
+        val: 0
+    },
+    tripMpg: {
+        pre: 'Fuel',
+        suf: 'MPG',
+        val: 0
+    },
+    tripRange: {
+        pre: 'Range',
+        suf: 'Miles',
+        val: 0
+    },
+};
 //message object which is used to send can message
 var msgOut = {
     'id': 712,
     'data': def
 
 }
-console.log("bringing can up res: " + JSON.stringify(exec("sudo /sbin/ip link set can0 up type can bitrate 125000")))
-var brightness = 255
+
+//console.log("bringing can up res: " + JSON.stringify(exec("sudo /sbin/ip link set can0 up type can bitrate 125000")))
+var brightness = 255;
+var day = true;
 exec("sudo sh -c 'echo " + '"' + brightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
 
 //read in config JSON files, canMap defines messages in, can out defines commands to send out
@@ -40,7 +65,10 @@ var canIds = fs.readFileSync(__dirname + "/resources/canMap.json")
 var outIds = fs.readFileSync(__dirname + "/resources/canOut.json")
 
 //create indicator object, this sends the status of all leds over the socket
-var indicators = {}
+var indicators = {};
+
+//create settings object
+var settings = {};
 
 //parse json objects
 canIds = JSON.parse(canIds)
@@ -49,6 +77,7 @@ console.log(canIds)
 
 //create can channel
 var channel = can.createRawChannel("can0", true);
+
 //channel.setRxFilters = [{ id: 520, mask: 520 }, { id: 40, mask: 40 }, { id: 360, mask: 360 }]
 
 parser.on('data', function (data) {
@@ -129,6 +158,12 @@ channel.addListener("onMessage", function (msg) {
     } else if (msg.id === 360) {
         if(brightness === 0) {
             var arr = [...msg.data]
+            if(day) {
+                lights.writeSync(1);
+                lights.writeSync(0);
+                day = false;
+            }
+
             var newAmb = arr[3]
             if(staticAmb != newAmb) {
                 staticAmb = newAmb
@@ -137,8 +172,62 @@ channel.addListener("onMessage", function (msg) {
                 var adjustedBrightness = Math.floor(perc * 100) + 150
                 exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
+        } else {
+            if(!day) {
+                lights.writeSync(1);
+                lights.writeSync(0);
+                day = false;
+            }
+
         }
 
+    } else if (msg.id === 968) {
+        tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3) / 10.0;
+        data = msg.data.readUIntBE(3, 2);
+        val = data.toString(2);
+        length = val.length;
+        start = length -9;
+        mpg = parseInt(val.slice(start, length), 2) / 10.0;
+        //tripInfo.tripMpg.val = mpg
+	tripInfo.tripAvg.val = mpg;
+    } else if (msg.id === 904) {
+        data = msg.data.readUIntBE(3, 2);
+        val = data.toString(2);
+        length = val.length;
+        start = length -9;
+        mpg = parseInt(val.slice(start, length), 2) / 10.0;
+        tripInfo.tripMpg.val = mpg
+    } else if (msg.id === 136) {
+        data = msg.data.readUIntBE(0, 2)
+        val = data.toString(2);
+        length = val.length;
+        start = length -9;
+        mpg = parseInt(val.slice(start, length), 2);
+        tripInfo.tripRange.val = mpg
+    } else if (msg.id === 680) {
+
+        //turn the id to string, so it can be used as the json object key
+        var strId2 = msg.id.toString()
+
+        //turn the message buffer to an array
+        var arr2 = [...msg.data]
+
+        //loop though each byte defined in the json
+        for (var k in canIds[strId2]) {
+            // console.log(k)
+
+            //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
+            for (i = 0; i < canIds[strId2][k].length; i++) {
+                if(arr2[parseInt(k)] & canIds[strId2][parseInt(k)][i.toString()].val){
+                settings[canIds[strId2][parseInt(k)][i.toString()].handle] = true;
+            } else {
+		settings[canIds[strId2][parseInt(k)][i.toString()].handle] = false
+}
+console.log(settings)
+}
+            // console.log(arr)
+            // console.log(msg.data[k])
+        }
     }
 });
 
@@ -192,6 +281,7 @@ io.on('connection', function (client) {
         canMsg.id = 712
         canMsg.data = new Buffer(msgOut.data)
         channel.send(canMsg)
+
         // console.log(canMsg)
     })
     console.log('Client connected....');
@@ -209,6 +299,25 @@ setInterval(() => {
 
     //emit the indicators object over sockets to the client
     io.emit('status', indicators);
+    //console.log('emitting')
+    io.emit('trip', tripInfo);
+
+    // io.emit('settings', settings);
+    var testSettings = {
+        test_1_2: true,
+        test2: true,
+        test3: false,
+        test4: true,
+        test5: true,
+        test6: true,
+        test7: false,
+        test8: true,
+        test9: true,
+        test10: true,
+        test11: false,
+        test12: true,
+    }
+    io.emit('settings', settings);
 
     //turn the canbus array to buffer object
     out.data = new Buffer(msgOut.data)
@@ -221,6 +330,7 @@ setInterval(() => {
     //console.log(out)
 }, 100)
 
+
 setInterval(() => {
     temp.measure(function (err, temp) {
         if (err) console.error(err);
@@ -228,6 +338,6 @@ setInterval(() => {
             info['cpu'] = temp
         }
     });
-
     io.emit('info', info);
 }, 500)
+
