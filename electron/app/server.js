@@ -12,11 +12,15 @@ var { exec } = require('child_process');
 var SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const power = new Gpio(3, 'in', 'rising', {debounceTimeout:10});
-const home = new Gpio(5, 'in', 'rising', {debounceTimeout: 10});
+const home = new Gpio(5, 'in', 'both', {debounceTimeout: 10});
+const appSwitch = new Gpio(17, 'out');
 const lights = new Gpio(22, 'out');
 var serialPort = new SerialPort('/dev/ttyACM0', {
     baudRate: 9600
 });
+
+appSwitch.writeSync(0);
+
 const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
 
 
@@ -109,11 +113,23 @@ parser.on('data', function (data) {
 
 power.watch((err, value) => {
 	exec("sudo shutdown -h now")
+
+
 })
 
 home.watch((err, value) => {
 	console.log("Home pressed");
-	exec("/home/pi/Desktop/open.sh")	
+    if(err) {
+        console.log("HOME PIN ERROR " + err)
+    }
+    console.log(value)
+    if(value === 1) {
+        appSwitch.writeSync(1)
+    } else (
+        appSwitch.writeSync(0)
+    )
+	// exec("/home/pi/Desktop/open.sh")
+
 })
 
 
@@ -158,10 +174,11 @@ channel.addListener("onMessage", function (msg) {
     } else if (msg.id === 360) {
         if(brightness === 0) {
             var arr = [...msg.data]
-            if(day) {
+            if((day)) {
                 lights.writeSync(1);
                 lights.writeSync(0);
                 day = false;
+                console.log("switching to night mode")
             }
 
             var newAmb = arr[3]
@@ -173,10 +190,11 @@ channel.addListener("onMessage", function (msg) {
                 exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
             }
         } else {
-            if(!day) {
+            if(!(day)) {
                 lights.writeSync(1);
                 lights.writeSync(0);
-                day = false;
+                day = true;
+                console.log("switching to day mode")
             }
 
         }
