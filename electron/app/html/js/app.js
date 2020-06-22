@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", onDomReadyHandler);
 
 
 
+
+
 function onDomReadyHandler(event) {
     socket.on('status', (data) => {
         //console.log('data')

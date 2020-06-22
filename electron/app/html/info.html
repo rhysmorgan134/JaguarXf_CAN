@@ -7,6 +7,7 @@
     <!-- <link rel="stylesheet" href="//fonts.googleapis.com/css?family=font1|font2|etc" type="text/css"> -->
     <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
     <link href="icons/material-icons.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
     <link href="css/info.css" rel="stylesheet">
     <script src="/socket.io/socket.io.js"></script>
 
@@ -16,23 +17,24 @@
 </head>
 
 <body class='body'>
-<div class='info'>
-    <div class="infoCard">
+<div class="main">
+    <div class="topInfo">
+        <div class="dataBox">
+            <p class="dataVal" id="revs">0</p>
+            <p class="dataTitle">RPM</p>
+        </div>
+        <div class="dataBox">
+            <p class="dataVal" id="coolant">0 &#8451</p>
+            <p class="dataTitle">Coolant</p>
+        </div>
+    </div>
+    <div class="tripInfo">
         <div class="data" id="tripDistance"></div>
         <div class="data" id="tripAvg"></div>
         <div class="data" id="tripMpg"></div>
         <div class="data" id="tripRange"></div>
     </div>
-    <div class="infoCard">
-        <div class="data" id="engineSpeed"></div>
-        <div class="data" id="engineRevs"></div>
-        <div class="data" id="engineTemp"></div>
-    </div>
-    <div class="infoCard">
-        spare
-    </div>
 </div>
-<div class='spacer'>ds</div>
 <div class="infoTop">
     <div class="topBtn bottomButtons ">
         <i class="material-icons" id='temp'>developer_board</i>
