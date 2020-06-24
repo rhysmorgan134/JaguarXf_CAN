@@ -23,6 +23,10 @@ module.exports = function(window) {
         baudRate: 9600
     });
 
+    // new class methods
+    const HsInfo = require('./modules/HsInfo');
+    let hsInfo = new HsInfo();
+
     // const mainWindow = BrowserWindow.getCurrentWindow();
     window.setBackgroundColor('#EEEEEE');
     window.blur();
@@ -36,10 +40,6 @@ module.exports = function(window) {
     var staticAmb = 255;
     var tempCar = {};
     var info = {};
-    var hsInfo = {
-        revs: 0,
-        coolant: 0
-    };
     var tripInfo = {
         tripDistance: {
             pre: 'Distance',
@@ -86,9 +86,9 @@ module.exports = function(window) {
     var settings = {};
 
 //parse json objects
-    canIds = JSON.parse(canIds)
-    outIds = JSON.parse(outIds)
-    console.log(canIds)
+    canIds = JSON.parse(canIds);
+    outIds = JSON.parse(outIds);
+    console.log(canIds);
 
 //create can channel
     var channel = can.createRawChannel("can0", true);
@@ -97,13 +97,7 @@ module.exports = function(window) {
 //channel.setRxFilters = [{ id: 520, mask: 520 }, { id: 40, mask: 40 }, { id: 360, mask: 360 }]
     channel1.setRxFilters = [{ id: 1273, mask: 1273}];
     channel1.addListener("onMessage", function (msg) {
-	if(msg.id === 1273) {
-	    var arr = [...msg.data]
-        var coolant = arr[4]
-	    console.log("in channel 1", coolant);
-        coolant = ((coolant - 32) * 5) /9;
-        hsInfo.coolant = coolant;
-}
+        hsInfo.parseMessage(msg);
     });
 
 
@@ -201,7 +195,7 @@ module.exports = function(window) {
                 if ((day)) {
                     lights.writeSync(1);
                     lights.writeSync(0);
-                    day = true;
+                    day = false;
                     window.setBackgroundColor('#EEEEEE');
                     window.blur();
                     window.focus();
@@ -219,7 +213,7 @@ module.exports = function(window) {
                 if (!(day)) {
                     noLights.writeSync(1);
                     noLights.writeSync(0);
-                    day = false;
+                    day = true;
                     window.setBackgroundColor('#121212');
                     window.blur();
                     window.focus();
@@ -277,7 +271,7 @@ module.exports = function(window) {
     });
 
     app.get('/hs', (req, res) => {
-        res.json(hsInfo);
+        res.json(hsInfo.dataObj);
     });
 
     app.get('/theme', (req, res) => {
