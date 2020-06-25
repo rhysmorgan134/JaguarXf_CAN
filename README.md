@@ -56,7 +56,7 @@ To allow the CAN channels to come up on boot, modify rc.local
 Paste before the end
 
 ```
-sudo /sbin/ip link set can0 up type can bitrate 125000 //highspeed can for engine comms is 500000 baud
+sudo /sbin/ip link set can0 up type can bitrate 125000
 sudo /sbin/ip link set can0 up type can bitrate 500000
 ```
 
