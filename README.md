@@ -1,20 +1,28 @@
 # Jaguar XF Canbus Decoding/linux integration
 
-Project to track the decoding of can bus messages, this is to allow custom control and data to/from the in car modules
-
-example of can messages being sent [XF CAN example](https://www.youtube.com/watch?v=0JXvSSPYgT0)
+This project is designed to replace the integrated touchscreen in the X250 Jaguar XF. This app is designed to be used with an android auto
+ wrapper (I recommend [intelligent auto](https://github.com/rsjudka/intelligent-auto))
+ 
+ The latest video can be found here [XF CAN example](https://youtu.be/o7TGF2G8eGw)
 
 ## Hardware
 
-* [RaspberryPi](https://www.amazon.co.uk/gp/product/B07BDR5PDW/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B07BDR5PDW&linkCode=as2&tag=rhysmorgan134-21&linkId=d3404d6b50251166481d1b5ee8acb8a8)
-* [PiCan2](https://www.amazon.co.uk/gp/product/B07GJKPQX4/ref=as_li_tl?ie=UTF8&tag=rhysmorgan134-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B07GJKPQX4&linkId=72ab539f4dad52e6d56cec02f436fdb4)
-* [OBD Socket](https://www.amazon.co.uk/gp/product/B01F6YGBX4/ref=as_li_tl?ie=UTF8&tag=rhysmorgan134-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B01F6YGBX4&linkId=c17d8a2ecc203f06040a1289ccf2ce94)
-* [official Pi Screen](https://www.amazon.co.uk/gp/product/B014WKCFR4/ref=as_li_tl?ie=UTF8&tag=rhysmorgan134-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B014WKCFR4&linkId=eea68be93280562ce100b096f32b65a2)
+* [RaspberryPi](https://amzn.to/2YzyQFy)
+* [Waveshare dual CAN hat](https://www.amazon.co.uk/gp/product/B087RJ6XGG/ref=as_li_qf_asin_il_tl?ie=UTF8&tag=moderndaymods-21&creative=6738&linkCode=as2&creativeASIN=B087RJ6XGG&linkId=662e77515a6937152bd372c51583c015)
+* [Pi Cooler](https://thepihut.com/collections/raspberry-pi-cases/products/xl-raspberry-pi-4-heatsink)
+* [Tall case](https://www.amazon.co.uk/gp/product/B06XT1JKLQ/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B06XT1JKLQ&linkId=95302a60fbd83f0d1ab4686599abd6f5)
+* [USB-C Power Adapter](https://www.amazon.co.uk/gp/product/B076DYMV8N/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B076DYMV8N&linkId=0c85fe20d4c1a169f672971b6eac8dd8)
+* [Display](https://www.amazon.co.uk/gp/product/B014WKCFR4/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B014WKCFR4&linkId=ce6127af5a1139aa3a3460b834504d73)
+* [Power Cable](https://www.amazon.co.uk/gp/product/B07RN3KCC6/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B07RN3KCC6&linkId=fbb2b3f0efb9a041bc7c39654bcdfa8f)
+* [Display Micro USB power](https://www.amazon.co.uk/gp/product/B07L1HDW4P/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B07L1HDW4P&linkId=0fa35a25e9de8b1ec861b8e5339552fa)
+* [Long Screen Cable](https://www.amazon.co.uk/gp/product/B00XW2NCKS/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B00XW2NCKS&linkId=ab6fa66d9e313e1bc88254b478a3d73e)
+* [OBD Socket](https://www.amazon.co.uk/gp/product/B07LG2GD9R/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B07LG2GD9R&linkId=597523c3c786725a344a7d24af97c762)
+* [SD Card](https://www.amazon.co.uk/gp/product/B06XFSZGCC/ref=as_li_tl?ie=UTF8&tag=moderndaymods-21&camp=1634&creative=6738&linkCode=as2&creativeASIN=B06XFSZGCC&linkId=80c96523b944947f7c4ab73af5d3bcb3)
 
 
 ## Installing
 
-install the Pi2CAN hat
+install the Waveshare can hat
 
 
 Boot up the pi, install can utils
@@ -27,14 +35,9 @@ modify /boot/config.txt add this to the end
 
 ```
 #CAN bus controllers
-dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25
-dtoverlay=spi-bcm2835-overlay
-```
-
-uncomment this row
-
-```
 dtparam=spi=on
+dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=23
+dtoverlay=mcp2515-can1,oscillator=16000000,interrupt=25
 ```
 
 Reboot
@@ -43,13 +46,23 @@ Bring up the can0 interface
 
 ```
 sudo /sbin/ip link set can0 up type can bitrate 125000 //highspeed can for engine comms is 500000 baud
+sudo /sbin/ip link set can0 up type can bitrate 500000
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+To allow the CAN channels to come up on boot, modify rc.local
+
+```sudo nano /etc/rc.local```
+
+Paste before the end
+
+```
+sudo /sbin/ip link set can0 up type can bitrate 125000
+sudo /sbin/ip link set can0 up type can bitrate 500000
+```
 
 ## Wiring the connector
 
-To communicate to the canbus through the obd2 port, you need to solder two connections to the obd plug, one will go on pin 3 (CAN High) the other will go to pin 11 (CAN Low), these then wire to the corresponding terminal on the piHAT, ensure the polarity is correct and the pins are correct. You do not need to wire anything to the 12V and  ground on the board, or use the DB9 connector.
+To communicate to the canbus through the obd2 port, you need to solder two connections to the obd plug, one will go on pin 3 (CAN High) the other will go to pin 11 (CAN Low), these then wire to the corresponding terminal on the piHAT, ensure the polarity is correct and the pins are correct.
 
 ## Receiving data
 
@@ -85,21 +98,9 @@ cansniffer
 
 it will display help of extra parameters you can use to help in decoding.
 
-## Sample program
+## Launching the app
 
-Included in the git is a sample program that contains a nodeJS script that prints out when the skip buttons have been pressed on the center control panel (where the cd slot is) and also the volume control. To run this, make sure you have nodeJS and npm installed https://www.instructables.com/id/Install-Nodejs-and-Npm-on-Raspberry-Pi/ navigate to the /samples/NodeJS_IoT/AudioControls/ folder ensure can0 is up, if not re run the command above, then run 
-```
-npm install
-```
-
-once complete run
-
-```
-node index.js
-```
-
-terminal should remain blank, when the button is pressed it should log that the skip button or volume buttons have been pressed.
-
+With both can channels up and active, navigate to the ```/install``` folder, in here will be a file called jag-hu.AppImage, to run type in the terminal ```./jag-hu.AppImage```
 
 ## Built using
 

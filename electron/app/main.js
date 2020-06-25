@@ -1,10 +1,10 @@
 const { app, BrowserWindow } = require('electron')
 //import '/material-design-icons/iconfont/material-icons.css'
-require('./server.js')
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
 
 function createWindow () {
   // Create the browser window.
@@ -18,7 +18,7 @@ function createWindow () {
       nodeIntegration: true
     }
   })
-
+  require('./server.js')(win);
 //mainWindow.webContents.session.clearCache(function(){}
 // process.noAsar=true;
   // and load the index.html of the app.
@@ -27,7 +27,7 @@ function createWindow () {
 //});
   win.removeMenu()
   // Open the DevTools.
-  //win.webContents.openDevTools()
+//  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -50,7 +50,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
