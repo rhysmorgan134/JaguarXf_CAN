@@ -7,18 +7,6 @@ This project is designed to replace the integrated touchscreen in the X250 Jagua
 
 ## Hardware
 
-*[Pi 4]
-*[Waveshare CAN HAT or PICAN]
-*[Pi Cooler]
-*[Tall case to allow HAT]
-*[USB-C power adapter]
-*[Display]
-*[USB C power Cable]
-*[Micro usb screen power]
-*[Camera Cable]
-*[OBD Plug]
-*[Samsung SD card]
-
 * [RaspberryPi](https://amzn.to/2YzyQFy)
 * [Waveshare dual CAN hat](https://www.amazon.co.uk/gp/product/B087RJ6XGG/ref=as_li_qf_asin_il_tl?ie=UTF8&tag=moderndaymods-21&creative=6738&linkCode=as2&creativeASIN=B087RJ6XGG&linkId=662e77515a6937152bd372c51583c015)
 * [Pi Cooler](https://thepihut.com/collections/raspberry-pi-cases/products/xl-raspberry-pi-4-heatsink)
