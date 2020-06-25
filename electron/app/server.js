@@ -1,5 +1,4 @@
 module.exports = function(window) {
-    console.log(window);
     var express = require('express');
     var app = express();
     var server = require('http').createServer(app);
@@ -16,16 +15,33 @@ module.exports = function(window) {
     const Readline = require('@serialport/parser-readline');
     const power = new Gpio(3, 'in', 'rising', {debounceTimeout: 10});
     const home = new Gpio(5, 'in', 'both', {debounceTimeout: 10});
-    const appSwitch = new Gpio(17, 'out');
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
     var serialPort = new SerialPort('/dev/ttyACM0', {
         baudRate: 9600
     });
 
+
+    const changeWindowColor = (colour) => {
+        console.log("changing colour to" + colour)
+        window.setBackgroundColor(colour);
+        window.blur();
+        window.focus();
+    }
+
+    //read in config JSON files, canMap defines messages in, can out defines commands to send out
+    console.log(__dirname)
+    var canIds = fs.readFileSync(__dirname + "/resources/canMap.json");
+    var outIds = fs.readFileSync(__dirname + "/resources/canOut.json");
+    canIds = JSON.parse(canIds);
+    outIds = JSON.parse(outIds);
+
     // new class methods
-    const HsInfo = require('./modules/HsInfo');
+    const HsInfo = require('./modules/highSpeed/HsInfo');
     let hsInfo = new HsInfo();
+
+    const MsInfo = require('./modules/mediumSpeed/MsInfo');
+    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor);
 
     // const mainWindow = BrowserWindow.getCurrentWindow();
     window.setBackgroundColor('#EEEEEE');
@@ -40,28 +56,7 @@ module.exports = function(window) {
     var staticAmb = 255;
     var tempCar = {};
     var info = {};
-    var tripInfo = {
-        tripDistance: {
-            pre: 'Distance',
-            suf: 'Miles',
-            val: 0
-        },
-        tripAvg: {
-            pre: 'AVG Speed',
-            suf: 'MPH',
-            val: 0
-        },
-        tripMpg: {
-            pre: 'Fuel',
-            suf: 'MPG',
-            val: 0
-        },
-        tripRange: {
-            pre: 'Range',
-            suf: 'Miles',
-            val: 0
-        },
-    };
+
 //message object which is used to send can message
     var msgOut = {
         'id': 712,
@@ -69,26 +64,9 @@ module.exports = function(window) {
 
     }
 
-//console.log("bringing can up res: " + JSON.stringify(exec("sudo /sbin/ip link set can0 up type can bitrate 125000")))
-    var brightness = 255;
-    var day = true;
-    exec("sudo sh -c 'echo " + '"' + brightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
-
-//read in config JSON files, canMap defines messages in, can out defines commands to send out
-    console.log(__dirname)
-    var canIds = fs.readFileSync(__dirname + "/resources/canMap.json")
-    var outIds = fs.readFileSync(__dirname + "/resources/canOut.json")
 
 //create indicator object, this sends the status of all leds over the socket
     var indicators = {};
-
-//create settings object
-    var settings = {};
-
-//parse json objects
-    canIds = JSON.parse(canIds);
-    outIds = JSON.parse(outIds);
-    console.log(canIds);
 
 //create can channel
     var channel = can.createRawChannel("can0", true);
@@ -133,26 +111,12 @@ module.exports = function(window) {
         exec("sudo shutdown -h now")
 
 
-    })
-
-    // home.watch((err, value) => {
-    //     console.log("Home pressed");
-    //     if (err) {
-    //         console.log("HOME PIN ERROR " + err)
-    //     }
-    //     console.log(value)
-    //     if (value === 1) {
-    //         appSwitch.writeSync(1)
-    //     } else (
-    //         appSwitch.writeSync(0)
-    //     )
-    //     // exec("/home/pi/Desktop/open.sh")
-    //
-    // });
+    });
 
 
 // create listener for all can bus messages
     channel.addListener("onMessage", function (msg) {
+        msInfo.parseMessage(msg);
         //check if message id = 520, hex - 0x208, this contains the statuses sent to the panel
         if (msg.id === 520) {
 
@@ -178,96 +142,101 @@ module.exports = function(window) {
             var drivT = arr[6] / 2
             tempCar.passTempText = passT.toString() + '&#x2103'
             tempCar.driverTempText = drivT.toString() + '&#x2103'
-        } else if (msg.id === 40) {
-            var arr = [...msg.data]
-            var newBrightness = arr[3]
-            if (newBrightness !== brightness) {
-                brightness = newBrightness
-                if (brightness != 0) {
-                    var adjustedBrightness = brightness / 255
-                    adjustedBrightness = Math.floor((adjustedBrightness * 100) + 20)
-                    exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
-                }
-            }
-        } else if (msg.id === 360) {
-            if (brightness === 0) {
-                var arr = [...msg.data]
-                if ((day)) {
-                    lights.writeSync(1);
-                    lights.writeSync(0);
-                    day = false;
-                    window.setBackgroundColor('#EEEEEE');
-                    window.blur();
-                    window.focus();
-                }
-
-                var newAmb = arr[3]
-                if (staticAmb != newAmb) {
-                    staticAmb = newAmb
-                    var amb = 255 - arr[3]
-                    var perc = amb / 255
-                    var adjustedBrightness = Math.floor(perc * 100) + 150
-                    exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
-                }
-            } else {
-                if (!(day)) {
-                    noLights.writeSync(1);
-                    noLights.writeSync(0);
-                    day = true;
-                    window.setBackgroundColor('#121212');
-                    window.blur();
-                    window.focus();
-                }
-
-            }
-
-        } else if (msg.id === 968) {
-            tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3) / 10.0;
-            data = msg.data.readUIntBE(3, 2);
-            val = data.toString(2);
-            length = val.length;
-            start = length - 9;
-            mpg = parseInt(val.slice(start, length), 2) / 10.0;
-            //tripInfo.tripMpg.val = mpg
-            tripInfo.tripAvg.val = mpg;
-        } else if (msg.id === 904) {
-            data = msg.data.readUIntBE(3, 2);
-            val = data.toString(2);
-            length = val.length;
-            start = length - 9;
-            mpg = parseInt(val.slice(start, length), 2) / 10.0;
-            tripInfo.tripMpg.val = mpg
-        } else if (msg.id === 136) {
-            data = msg.data.readUIntBE(0, 2)
-            val = data.toString(2);
-            length = val.length;
-            start = length - 9;
-            mpg = parseInt(val.slice(start, length), 2);
-            tripInfo.tripRange.val = mpg
-        } else if (msg.id === 680) {
-
-            //turn the id to string, so it can be used as the json object key
-            var strId2 = msg.id.toString()
-
-            //turn the message buffer to an array
-            var arr2 = [...msg.data]
-
-            //loop though each byte defined in the json
-            for (var k in canIds[strId2]) {
-                // console.log(k)
-
-                //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
-                for (i = 0; i < canIds[strId2][k].length; i++) {
-                    if (arr2[parseInt(k)] & canIds[strId2][parseInt(k)][i.toString()].val) {
-                        settings[canIds[strId2][parseInt(k)][i.toString()].handle] = true;
-                    } else {
-                        settings[canIds[strId2][parseInt(k)][i.toString()].handle] = false
-                    }
-                }
-                // console.log(arr)
-                // console.log(msg.data[k])
-            }
         }
+        // } else if (msg.id === 40) {
+        //     var arr = [...msg.data]
+        //     var newBrightness = arr[3]
+        //     if (newBrightness !== brightness) {
+        //         brightness = newBrightness
+        //         if (brightness != 0) {
+        //             var adjustedBrightness = brightness / 255
+        //             adjustedBrightness = Math.floor((adjustedBrightness * 100) + 20)
+        //             exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
+        //         }
+        //     }
+        // }
+
+
+        // } else if (msg.id === 360) {
+        //     if (brightness === 0) {
+        //         var arr = [...msg.data]
+        //         if ((day)) {
+        //             lights.writeSync(1);
+        //             lights.writeSync(0);
+        //             day = false;
+        //             window.setBackgroundColor('#EEEEEE');
+        //             window.blur();
+        //             window.focus();
+        //         }
+        //
+        //         var newAmb = arr[3]
+        //         if (staticAmb != newAmb) {
+        //             staticAmb = newAmb
+        //             var amb = 255 - arr[3]
+        //             var perc = amb / 255
+        //             var adjustedBrightness = Math.floor(perc * 100) + 150
+        //             exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
+        //         }
+        //     } else {
+        //         if (!(day)) {
+        //             noLights.writeSync(1);
+        //             noLights.writeSync(0);
+        //             day = true;
+        //             window.setBackgroundColor('#121212');
+        //             window.blur();
+        //             window.focus();
+        //         }
+        //
+        //     }
+        // }
+        // } else if (msg.id === 968) {
+        //     tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3) / 10.0;
+        //     data = msg.data.readUIntBE(3, 2);
+        //     val = data.toString(2);
+        //     length = val.length;
+        //     start = length - 9;
+        //     mpg = parseInt(val.slice(start, length), 2) / 10.0;
+        //     //tripInfo.tripMpg.val = mpg
+        //     tripInfo.tripAvg.val = mpg;
+        // } else if (msg.id === 904) {
+        //     data = msg.data.readUIntBE(3, 2);
+        //     val = data.toString(2);
+        //     length = val.length;
+        //     start = length - 9;
+        //     mpg = parseInt(val.slice(start, length), 2) / 10.0;
+        //     tripInfo.tripMpg.val = mpg
+        // } else if (msg.id === 136) {
+        //     data = msg.data.readUIntBE(0, 2)
+        //     val = data.toString(2);
+        //     length = val.length;
+        //     start = length - 9;
+        //     mpg = parseInt(val.slice(start, length), 2);
+        //     tripInfo.tripRange.val = mpg
+        // }
+        // else if (msg.id === 680) {
+        //
+        //     //turn the id to string, so it can be used as the json object key
+        //     var strId2 = msg.id.toString()
+        //
+        //     //turn the message buffer to an array
+        //     var arr2 = [...msg.data]
+        //
+        //     //loop though each byte defined in the json
+        //     for (var k in canIds[strId2]) {
+        //         // console.log(k)
+        //
+        //         //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
+        //         for (i = 0; i < canIds[strId2][k].length; i++) {
+        //             if (arr2[parseInt(k)] & canIds[strId2][parseInt(k)][i.toString()].val) {
+        //                 settings[canIds[strId2][parseInt(k)][i.toString()].handle] = true;
+        //             } else {
+        //                 settings[canIds[strId2][parseInt(k)][i.toString()].handle] = false
+        //             }
+        //         }
+        //         // console.log(arr)
+        //         // console.log(msg.data[k])
+        //     }
+        // }
     });
 
     app.get('/hs', (req, res) => {
@@ -275,7 +244,7 @@ module.exports = function(window) {
     });
 
     app.get('/theme', (req, res) => {
-        res.json({theme: day});
+        res.json({theme: !(msInfo.utils.isNight)});
     });
 
 
@@ -349,24 +318,12 @@ module.exports = function(window) {
         //emit the indicators object over sockets to the client
         io.emit('status', indicators);
         //console.log('emitting')
-        io.emit('trip', tripInfo);
+        io.emit('trip', msInfo.dataObj.tripInfo);
 
         // io.emit('settings', settings);
-        var testSettings = {
-            test_1_2: true,
-            test2: true,
-            test3: false,
-            test4: true,
-            test5: true,
-            test6: true,
-            test7: false,
-            test8: true,
-            test9: true,
-            test10: true,
-            test11: false,
-            test12: true,
-        }
-        io.emit('settings', settings);
+        io.emit('climate', msInfo.dataObj.climate);
+
+        io.emit('settings', msInfo.dataObj.settings);
 
         //turn the canbus array to buffer object
         out.data = new Buffer(msgOut.data)

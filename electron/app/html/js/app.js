@@ -50,5 +50,9 @@ function onDomReadyHandler(event) {
             for(var k in data) {
                 document.getElementById(k).innerHTML = data[k]
             }
-        })
+        });
+    socket.on('climate', (data) => {
+        console.log(data);
+        document.getElementById('interiorTemp').innerHTML = data.interiorTemp + "&#x2103"
+    })
     } 

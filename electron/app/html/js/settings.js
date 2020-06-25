@@ -3,6 +3,7 @@ var socket = io.connect('localhost:3000');
 var firstRun = true;
 function onDomReadyHandler(event) {
     socket.on('settings', (data) => {
+        console.log(data);
         if(firstRun) {
             var html = []
             for (var k in data) {

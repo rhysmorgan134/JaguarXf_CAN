@@ -35,11 +35,15 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 40%;
+
 }
 
 .dataVal {
     font-size: 5vw;
     margin-bottom: 5%;
+    text-align: center;
+    min-width: 50%;
 }
 
 .dataTitle {
@@ -51,6 +55,7 @@ html {
 .tripInfo {
     display: flex;
     justify-content: space-around;
+    margin-bottom: 10%;
 }
 
 button {

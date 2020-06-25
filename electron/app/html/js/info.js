@@ -10,9 +10,10 @@ function onDomReadyHandler(event) {
     getHs();
     setInterval(() => {
         getHs();
-    }, 300);
+    }, 100);
 
     socket.on('trip', (data) => {
+        console.log(data)
             for (var k in data) {
                 document.getElementById(k).innerText =  data[k].pre + ": " + data[k].val + " " + data[k].suf
             }
@@ -25,6 +26,8 @@ getHs = () => {
         .then(function(data) {
             console.log(data);
             document.getElementById('coolant').innerHTML = data.coolant + " &#8451";
+            document.getElementById('oil').innerHTML = data.oil + " &#8451";
+            document.getElementById('revs').innerHTML = data.revs;
         })
         .catch(function(error) {
             console.log(error);

@@ -1,4 +1,4 @@
-var HsInfo = require('./HsInfo.js');
+var HsInfo = require('./highSpeed/HsInfo.js');
 
 const hsInfo = new HsInfo();
 
