@@ -40,9 +40,9 @@ class MsInfo {
             },
             brightness: {
                 rawLightResistence: 0,
-                adjustedLight: 0,
+                adjustedLight: 255,
                 ambientRaw: 0,
-                adjustedAmbient: 0
+                adjustedAmbient: 255,
 
             },
             climate: {
