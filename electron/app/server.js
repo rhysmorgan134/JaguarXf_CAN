@@ -8,8 +8,6 @@ module.exports = function(window) {
     var temp = require("pi-temperature");
     var Gpio = require("onoff").Gpio;
 
-
-    var fan = new Gpio(17, 'out');
     var {exec} = require('child_process');
     var SerialPort = require('serialport');
     const Readline = require('@serialport/parser-readline');
