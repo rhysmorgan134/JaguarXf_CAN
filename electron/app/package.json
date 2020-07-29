@@ -19,19 +19,21 @@
     "express": "^4.17.1",
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^5.0.1",
+    "minimist": ">=1.2.3",
+    "node-abi": "^2.18.0",
     "nodemon": "^1.19.4",
     "onoff": "^5.0.0",
     "pi-temperature": "^2.1.0",
+    "request": "^2.88.2",
     "rpi-gpio": "^2.1.5",
     "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
-    "socketcan": "^2.5.0",
-    "minimist": ">=1.2.3"
+    "socketcan": "^2.8.0"
   },
   "devDependencies": {
-    "electron-builder": "^21.1.5",
-    "electron": "6.1.5",
-    "electron-rebuild": "^1.8.8"
+    "electron-builder": "^22.7.0",
+    "electron": "9.1.1",
+    "electron-rebuild": "^1.11.0"
   },
   "electron-builder": {
     "appId": "com.rhysmorgan.jaguarCanControl",

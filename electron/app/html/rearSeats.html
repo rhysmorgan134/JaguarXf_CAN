@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Jaguar App Control</title>
+    <!-- <link rel="stylesheet" href="//fonts.googleapis.com/css?family=font1|font2|etc" type="text/css"> -->
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    <link href="icons/material-icons.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/rearSeats.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    
+    
+    <!-- <script>var socket = io();</script> -->
+
+</head>
+
+<body class='body'>
+<div class="filmContainer" id="filmContainer">
+</div>
+            <div class='spacer'>ds</div>
+            <div class="infoTop">
+                <div class="topBtn bottomButtons ">
+                        <i class="material-icons" id='temp'>developer_board</i>
+                        <small id='cpu'></small>
+                </div>
+                <button class="topBtn bottomButtons " onclick="loadUrl('index.html')"><i class="material-icons icon">ac_unit</i></button>
+                <button class="topBtn bottomButtons temperature" onclick="loadUrl('rearSeats.html')"><i class="material-icons icon">movie</i></button>
+                <button class="topBtn bottomButtons" onclick="loadUrl('info.html')"><i class="material-icons icon">directions_car</i></button>
+                <button class="topBtn bottomButtons" onclick="loadUrl('settings.html')"><i class="material-icons icon">settings</i></button>
+                <button id="btn-close" class="topBtn bottomButtons"><i class="material-icons icon">exit_to_app</i></button>
+<!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('skipP')" onmouseup="buttonRel('skipP')"><i class="material-icons icon">skip_previous</i>Prev</button>-->
+<!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('skipF')" onmouseup="buttonRel('skipF')">Next<i class="material-icons">skip_next</i></button>-->
+<!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('volDown')" onmouseup="buttonRel('volDown')"><i class="material-icons">volume_down</i></button>-->
+<!--                    <button class="temperature topBtn bottomButtons" onmousedown="buttonPress('volUp')" onmouseup="buttonRel('volUp')"><i class="material-icons">volume_up</i></button>-->
+<!--                    <button id='btn-min' class='temperature topBtn  bottomButtons'>min</button>-->
+<!--                    <button id='btn-close' class='temperature topBtn  bottomButtons'>close</button>-->
+            </div>
+
+        <script type='text/javascript' src='./js/rearSeats.js'></script>
+        <script type='text/javascript' src='./js/common.js'></script>
+</body>
+
+</html>
