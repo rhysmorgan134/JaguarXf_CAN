@@ -13,8 +13,8 @@ module.exports = function(window) {
     var fan = new Gpio(17, 'out');
     var {exec} = require('child_process');
     const power = new Gpio(3, 'in', 'rising', {debounceTimeout: 10});
-    const home = new Gpio(5, 'in', 'both', {debounceTimeout: 10});
-    const lights = new Gpio(22, 'out');
+    const home = new Gpio(5, 'out');
+    const reverse = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
 
 
@@ -33,8 +33,8 @@ module.exports = function(window) {
     // outIds = JSON.parse(outIds);
 
     // new class methods
-    // const MsInfo = require('./modules/mediumSpeed/MsInfo');
-    // let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor);
+    const MsInfo = require('./modules/mediumSpeed/MsInfo');
+    let msInfo = new MsInfo(reverse, home, exec, changeWindowColor);
     const Kodi = require('./modules/kodi');
     let kodi = new Kodi();
 
@@ -49,7 +49,12 @@ module.exports = function(window) {
     var indicators = {};
 
 //create can channel
-//     var channel = can.createRawChannel("can0", true);
+    var channel = can.createRawChannel("can0", true);
+
+    channel0.setRxFilters = [{ id: 126, mask: 126}];
+    channel0.addListener("onMessage", function (msg) {
+        msInfo.parseMessage(msg);
+    });
 
     power.watch((err, value) => {
         exec("sudo shutdown -h now")
@@ -79,7 +84,7 @@ module.exports = function(window) {
     });
 
 //can bus channel start
-//     channel.start();
+    channel.start();
 
 
 

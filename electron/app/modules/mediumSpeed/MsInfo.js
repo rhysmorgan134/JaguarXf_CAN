@@ -1,43 +1,11 @@
-const Id968 = require('./968');
-const Id904 = require('./904');
-const Id680 = require('./680');
-const Id40 = require('./40');
-const Id72 = require('./72');
-const Id360 = require('./360');
-const Utils = require('./Utils');
+const Id126 = require('./126');;
+//const Utils = require('./Utils');
 
 class MsInfo {
-    constructor(canIds, outIds, dayGpio, nightGpio, exec, win) {
+    constructor(reverseGpio, homeGpio, exec, win) {
         this.bus = 'ms';
-        this.canIds = canIds;
-        this.outIds = outIds;
-        this.IDs = [968, 904, 680, 40, 360, 72];
+        this.IDs = [126];
         this.data = {
-            tripInfo: {
-                tripDistance: {
-                    pre: 'Distance',
-                    suf: 'Miles',
-                    val: 0
-                },
-                tripAvg: {
-                    pre: 'AVG Speed',
-                    suf: 'MPH',
-                    val: 0
-                },
-                tripMpg: {
-                    pre: 'Fuel',
-                    suf: 'MPG',
-                    val: 0
-                },
-                tripRange: {
-                    pre: 'Range',
-                    suf: 'Miles',
-                    val: 0
-                }
-            },
-            settings: {
-
-            },
             brightness: {
                 rawLightResistence: 0,
                 adjustedLight: 255,
@@ -45,18 +13,11 @@ class MsInfo {
                 adjustedAmbient: 255,
 
             },
-            climate: {
-                interiorTemp: 0
-            }
+            reverse: false
         };
-        this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win);
+        //this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win);
         this.IdModules = {
-            Id968: new Id968(),
-            Id904: new Id904(),
-            Id680: new Id680(this.canIds, this.outIds),
-            Id40: new Id40(this.utils.brightnessValues, exec),
-            Id360: new Id360(),
-            Id72: new Id72()
+            Id126: new Id126(reverseGpio, homeGpio)
         }
 
     }
