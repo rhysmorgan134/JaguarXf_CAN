@@ -15,7 +15,9 @@ module.exports = function(window) {
     const power = new Gpio(3, 'in', 'rising', {debounceTimeout: 10});
     const home = new Gpio(5, 'out');
     const reverse = new Gpio(22, 'out');
-    const noLights = new Gpio(6, 'out');
+    const nightGpio = new Gpio(6, 'out');
+    const dayGpio = new Gpio(13, 'out');
+
 
 
     const changeWindowColor = (colour) => {
@@ -34,7 +36,7 @@ module.exports = function(window) {
 
     // new class methods
     const MsInfo = require('./modules/mediumSpeed/MsInfo');
-    let msInfo = new MsInfo(reverse, home, exec, changeWindowColor);
+    let msInfo = new MsInfo(reverse, home, nightGpio, dayGpio, exec, changeWindowColor);
     const Kodi = require('./modules/kodi');
     let kodi = new Kodi();
 

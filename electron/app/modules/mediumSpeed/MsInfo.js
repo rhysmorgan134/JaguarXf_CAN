@@ -1,10 +1,11 @@
-const Id126 = require('./126');;
+const Id126 = require('./126');
+const Id384 = require('./384');
 //const Utils = require('./Utils');
 
 class MsInfo {
-    constructor(reverseGpio, homeGpio, exec, win) {
+    constructor(reverseGpio, homeGpio, nightGpio, dayGpio, exec, win) {
         this.bus = 'ms';
-        this.IDs = [126];
+        this.IDs = [126, 384];
         this.data = {
             brightness: {
                 rawLightResistence: 0,
@@ -13,11 +14,13 @@ class MsInfo {
                 adjustedAmbient: 255,
 
             },
+            night: false,
             reverse: false
         };
-        //this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win);
+        this.utils = new Utils(this.data.night, this.night, dayGpio, nightGpio, exec, win);
         this.IdModules = {
-            Id126: new Id126(reverseGpio, homeGpio)
+            Id126: new Id126(reverseGpio, homeGpio),
+            Id384: new Id384(nightGpio, dayGpio)
         }
 
     }
@@ -26,8 +29,8 @@ class MsInfo {
         return this.data;
     };
 
-    get brightnessValues() {
-        return this.data.brightness;
+    get night() {
+        return this.data.night;
     }
 
     parseMessage(message) {
