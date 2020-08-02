@@ -12,10 +12,10 @@ loadUrl = function(name, event) {
 document.addEventListener("DOMContentLoaded", onDomReadyHandler);
 
 function onDomReadyHandler(event) {
-    getTheme();
-    setInterval(() => {
-        getTheme();
-    }, 300);
+    //getTheme();
+   // setInterval(() => {
+    //    getTheme();
+    //}, 300);
 
 }
 

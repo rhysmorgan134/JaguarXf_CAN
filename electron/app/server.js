@@ -49,7 +49,7 @@ module.exports = function(window) {
     var indicators = {};
 
 //create can channel
-    var channel = can.createRawChannel("can0", true);
+    var channel0 = can.createRawChannel("can0", true);
 
     channel0.setRxFilters = [{ id: 126, mask: 126}];
     channel0.addListener("onMessage", function (msg) {
@@ -84,7 +84,7 @@ module.exports = function(window) {
     });
 
 //can bus channel start
-    channel.start();
+    channel0.start();
 
 
 
