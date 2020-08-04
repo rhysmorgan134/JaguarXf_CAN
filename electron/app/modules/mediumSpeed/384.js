@@ -7,10 +7,11 @@ class Id384 {
 
     parseMessage = (message, Id) => {
         let arr = [...message];
-        let lights = arr[4] & 16;
+        let lights = arr[1] & 16;
         if(lights !== this.data.night) {
             this.data.night = lights
         }
+        //console.log('lights', this.data, lights);
         return this.data;
     };
 }

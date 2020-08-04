@@ -23,8 +23,8 @@ module.exports = function(window) {
     const changeWindowColor = (colour) => {
         console.log("changing colour to" + colour)
         window.setBackgroundColor(colour);
-        window.blur();
-        window.focus();
+        // window.blur();
+        // window.focus();
     }
 
     //read in config JSON files, canMap defines messages in, can out defines commands to send out
@@ -53,7 +53,7 @@ module.exports = function(window) {
 //create can channel
     var channel0 = can.createRawChannel("can0", true);
 
-    channel0.setRxFilters = [{ id: 126, mask: 126}];
+    channel0.setRxFilters = [{ id: 126, mask: 126}, {id:384, mask:384}];
     channel0.addListener("onMessage", function (msg) {
         msInfo.parseMessage(msg);
     });
@@ -72,7 +72,7 @@ module.exports = function(window) {
 //     });
 
     app.get('/theme', (req, res) => {
-        res.json({theme: !(msInfo.utils.isNight)});
+        res.json({theme: !(msInfo.utils.checkNight)});
     });
 
     app.get('/getFilms', (req, res) => {

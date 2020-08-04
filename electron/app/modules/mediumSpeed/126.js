@@ -37,12 +37,12 @@ class Id126 {
 	console.log(this.data.reverse);
         if(this.data.reverse === true) {
             this.reverseGpio.writeSync(1);
-	    this.reverseGpio.writeSync(0);
-	console.log("revers toggled")
+	        this.reverseGpio.writeSync(0);
+	        console.log("revers toggled")
         } else {
             if(this.reverseGpio.readSync() === 1) {
                 console.log("reverse was high when should be low");
-		this.reverseGpio.writeSync(0);
+		        this.reverseGpio.writeSync(0);
             }
         }
     };

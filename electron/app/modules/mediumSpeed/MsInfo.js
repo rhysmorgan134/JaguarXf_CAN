@@ -1,6 +1,6 @@
 const Id126 = require('./126');
 const Id384 = require('./384');
-//const Utils = require('./Utils');
+const Utils = require('./Utils');
 
 class MsInfo {
     constructor(reverseGpio, homeGpio, nightGpio, dayGpio, exec, win) {
@@ -14,10 +14,10 @@ class MsInfo {
                 adjustedAmbient: 255,
 
             },
-            night: false,
+            night: 0,
             reverse: false
         };
-        this.utils = new Utils(this.data.night, this.night, dayGpio, nightGpio, exec, win);
+        this.utils = new Utils(this.dataObj, dayGpio, nightGpio, exec, win);
         this.IdModules = {
             Id126: new Id126(reverseGpio, homeGpio),
             Id384: new Id384(nightGpio, dayGpio)
@@ -29,7 +29,8 @@ class MsInfo {
         return this.data;
     };
 
-    get night() {
+    get nightValue() {
+        console.log("night requested", this.data.night)
         return this.data.night;
     }
 
@@ -43,6 +44,7 @@ class MsInfo {
                     }
                 } else {
                     this.data[key] = value;
+                    //console.log(this.data)
                 }
             }
         }
