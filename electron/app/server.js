@@ -7,15 +7,16 @@ module.exports = function(window) {
     var fs = require("fs");
     var temp = require("pi-temperature");
     var Gpio = require("onoff").Gpio;
+    var robot = require("robotjs");
 
     var {exec} = require('child_process');
     var SerialPort = require('serialport');
     const Readline = require('@serialport/parser-readline');
-    const power = new Gpio(3, 'in', 'rising', {debounceTimeout: 10});
-    const home = new Gpio(5, 'in', 'both', {debounceTimeout: 10});
+    const power = new Gpio(3, 'in', 'rising', {debounceTimeout: 100});
+    const home = new Gpio(5, 'in', 'falling', {debounceTimeout: 100});
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
-    var serialPort = new SerialPort('/dev/ttyACM0', {
+    var serialPort = new SerialPort('/dev/SWC', {
         baudRate: 9600
     });
 
@@ -39,7 +40,7 @@ module.exports = function(window) {
     let hsInfo = new HsInfo();
 
     const MsInfo = require('./modules/mediumSpeed/MsInfo');
-    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor);
+    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor, robot);
 
     // const mainWindow = BrowserWindow.getCurrentWindow();
     window.setBackgroundColor('#EEEEEE');
@@ -80,7 +81,6 @@ module.exports = function(window) {
 
     parser.on('data', function (data) {
         key = parseInt(data.toString());
-        console.log(data.toString());
         //console.log(typeof (key));
         if (key === 43) {
             console.log(43)
@@ -109,6 +109,10 @@ module.exports = function(window) {
         exec("sudo shutdown -h now")
 
 
+    });
+
+    home.watch((err, value) => {
+        robot.typeString('h');
     });
 
 
@@ -141,100 +145,6 @@ module.exports = function(window) {
             tempCar.passTempText = passT.toString() + '&#x2103'
             tempCar.driverTempText = drivT.toString() + '&#x2103'
         }
-        // } else if (msg.id === 40) {
-        //     var arr = [...msg.data]
-        //     var newBrightness = arr[3]
-        //     if (newBrightness !== brightness) {
-        //         brightness = newBrightness
-        //         if (brightness != 0) {
-        //             var adjustedBrightness = brightness / 255
-        //             adjustedBrightness = Math.floor((adjustedBrightness * 100) + 20)
-        //             exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
-        //         }
-        //     }
-        // }
-
-
-        // } else if (msg.id === 360) {
-        //     if (brightness === 0) {
-        //         var arr = [...msg.data]
-        //         if ((day)) {
-        //             lights.writeSync(1);
-        //             lights.writeSync(0);
-        //             day = false;
-        //             window.setBackgroundColor('#EEEEEE');
-        //             window.blur();
-        //             window.focus();
-        //         }
-        //
-        //         var newAmb = arr[3]
-        //         if (staticAmb != newAmb) {
-        //             staticAmb = newAmb
-        //             var amb = 255 - arr[3]
-        //             var perc = amb / 255
-        //             var adjustedBrightness = Math.floor(perc * 100) + 150
-        //             exec("sudo sh -c 'echo " + '"' + adjustedBrightness + '"' + " > /sys/class/backlight/rpi_backlight/brightness'")
-        //         }
-        //     } else {
-        //         if (!(day)) {
-        //             noLights.writeSync(1);
-        //             noLights.writeSync(0);
-        //             day = true;
-        //             window.setBackgroundColor('#121212');
-        //             window.blur();
-        //             window.focus();
-        //         }
-        //
-        //     }
-        // }
-        // } else if (msg.id === 968) {
-        //     tripInfo.tripDistance.val = msg.data.readUIntBE(5, 3) / 10.0;
-        //     data = msg.data.readUIntBE(3, 2);
-        //     val = data.toString(2);
-        //     length = val.length;
-        //     start = length - 9;
-        //     mpg = parseInt(val.slice(start, length), 2) / 10.0;
-        //     //tripInfo.tripMpg.val = mpg
-        //     tripInfo.tripAvg.val = mpg;
-        // } else if (msg.id === 904) {
-        //     data = msg.data.readUIntBE(3, 2);
-        //     val = data.toString(2);
-        //     length = val.length;
-        //     start = length - 9;
-        //     mpg = parseInt(val.slice(start, length), 2) / 10.0;
-        //     tripInfo.tripMpg.val = mpg
-        // } else if (msg.id === 136) {
-        //     data = msg.data.readUIntBE(0, 2)
-        //     val = data.toString(2);
-        //     length = val.length;
-        //     start = length - 9;
-        //     mpg = parseInt(val.slice(start, length), 2);
-        //     tripInfo.tripRange.val = mpg
-        // }
-        // else if (msg.id === 680) {
-        //
-        //     //turn the id to string, so it can be used as the json object key
-        //     var strId2 = msg.id.toString()
-        //
-        //     //turn the message buffer to an array
-        //     var arr2 = [...msg.data]
-        //
-        //     //loop though each byte defined in the json
-        //     for (var k in canIds[strId2]) {
-        //         // console.log(k)
-        //
-        //         //for each byte, set the relevant object key bit to the value set in the canbus message through bitwise operation
-        //         for (i = 0; i < canIds[strId2][k].length; i++) {
-        //             if (arr2[parseInt(k)] & canIds[strId2][parseInt(k)][i.toString()].val) {
-        //                 settings[canIds[strId2][parseInt(k)][i.toString()].handle] = true;
-        //             } else {
-        //                 settings[canIds[strId2][parseInt(k)][i.toString()].handle] = false
-        //             }
-        //         }
-        //         // console.log(arr)
-        //         // console.log(msg.data[k])
-        //     }
-        // }
     });
 
     app.get('/hs', (req, res) => {
@@ -337,7 +247,7 @@ module.exports = function(window) {
 
     setInterval(() => {
         temp.measure(function (err, temp) {
-            if (err) console.error(err);
+            if (err) console.error("temperature read error", err);
             else {
                 info['cpu'] = temp
             }

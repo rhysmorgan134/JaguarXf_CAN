@@ -7,11 +7,12 @@ const Id360 = require('./360');
 const Utils = require('./Utils');
 
 class MsInfo {
-    constructor(canIds, outIds, dayGpio, nightGpio, exec, win) {
+    constructor(canIds, outIds, dayGpio, nightGpio, exec, win, robot) {
         this.bus = 'ms';
         this.canIds = canIds;
         this.outIds = outIds;
         this.IDs = [968, 904, 680, 40, 360, 72];
+        this.robot = robot;
         this.data = {
             tripInfo: {
                 tripDistance: {
@@ -54,7 +55,7 @@ class MsInfo {
             Id968: new Id968(),
             Id904: new Id904(),
             Id680: new Id680(this.canIds, this.outIds),
-            Id40: new Id40(this.utils.brightnessValues, exec),
+            Id40: new Id40(this.utils.brightnessValues, exec, this.robot),
             Id360: new Id360(),
             Id72: new Id72()
         }

@@ -16,7 +16,6 @@ class Utils {
     }
 
     checkDayNight() {
-	console.log(this.brightnessValues.adjustedLight)
         if(this.brightnessValues.rawLightResistance > 0 && this.isNight === false) {
             this.nightGpio.writeSync(1);
             this.nightGpio.writeSync(0);

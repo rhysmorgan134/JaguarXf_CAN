@@ -1,7 +1,5 @@
 class Id680 {
     constructor(canIds, outIds) {
-        console.log("IDs in 680")
-        console.log(canIds)
         this.canIds = canIds;
         this.outIds = outIds;
         this.data = {
