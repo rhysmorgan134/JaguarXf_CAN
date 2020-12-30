@@ -1,46 +1,20 @@
 {
-  "name": "hu-app",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
-  "author": "John Doe <john@doe.com>",
-  "main": "./main.js",
-  "homepage": "https://github.com/rhysmorgan134/JaguarXf_CAN",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron --no-sandbox .",
-    "dist": "electron-builder",
-    "package": "electron-builder --linux AppImage --armv7l --publish never && cp dist/jag-hu.AppImage ../../install/jag-hu.AppImage "
+    "start": "node server.js"
   },
-  "build": {
-    "artifactName": "jag-hu.${ext}"
-  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "material-design-icons": "^3.0.1",
-    "material-design-icons-iconfont": "^5.0.1",
-    "nodemon": "^1.19.4",
-    "onoff": "^5.0.0",
-    "pi-temperature": "^2.1.0",
-    "rpi-gpio": "^2.1.5",
-    "serialport": "^8.0.7",
-    "socket.io": "^2.3.0",
-    "socketcan": "^2.5.0",
-    "minimist": ">=1.2.3"
-  },
-  "devDependencies": {
-    "electron-builder": "^21.1.5",
-    "electron": "6.1.5",
-    "electron-rebuild": "^1.8.8"
-  },
-  "electron-builder": {
-    "appId": "com.rhysmorgan.jaguarCanControl",
-    "linux": {
-      "target": {
-        "publish": "never",
-        "target": "deb",
-        "arch": "arm64"
-      }
-    }
+    "create-react-app": "^4.0.1",
+    "electron-redux": "^1.5.4",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^3.0.4"
   }
 }
