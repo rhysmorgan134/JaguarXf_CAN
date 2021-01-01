@@ -7,11 +7,15 @@ import VehicleInfo from "./components/vehicleInfo/VehicleInfo";
 import './App.css';
 import Nav from "./components/nav/Nav";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { createMuiTheme, ThemeProvider} from "@material-ui/core"
+import {createMuiTheme, CssBaseline, ThemeProvider} from "@material-ui/core"
 import {makeStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
+import {socketConnectT} from "./actions";
+import {useComponentWillMount} from "./helpers/componetWillMountHelper";
+
 const remote = window.require('electron').remote;
 ;
+
 
 const {BrowserWindow,dialog,Menu} = remote;
 
@@ -31,23 +35,45 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function App() {
+function App({socketConnectT}) {
     const classes = useStyles();
-    const prefersDarkMode =  useMediaQuery('(prefers-color-scheme: dark)')
+    const prefersDarkMode =  false//useMediaQuery('(prefers-color-scheme: dark)')
+
+
 
     const theme = React.useMemo(
         () =>
             createMuiTheme({
                 palette: {
-                    type: prefersDarkMode ? 'dark' : 'light'
+                    type: prefersDarkMode ? 'dark' : 'light',
+                    background : {
+                        default: prefersDarkMode ? '#121212' : '#eeeeee',
+                        paper: prefersDarkMode ? '#2e2e2e' : '#fafafa'
+                    },
+                    secondary: {
+                        main: '#3dedf4',
+                        dark: 'ff00ee'
+                    },
+                    MuiIcon: {
+                        root: {
+                            fontSize: '100px',
+                        },
+                    },
                 }
             }),
                 [prefersDarkMode]
     )
 
+    const connectSocket = () => {
+        console.log("connecting socket")
+        socketConnectT("192.168.0.3:3001")
+    }
+    useComponentWillMount(connectSocket)
+
     return (
-        <ThemeProvider theme={theme}>
-            <Box className={classes.root}>
+        <ThemeProvider theme={theme} >
+            <CssBaseline />
+            <Box className={classes.root} >
                 <HashRouter>
                     <div className={`${classes.content}`}>
                         <Switch>
@@ -63,4 +89,11 @@ function App() {
         </ThemeProvider>
     )
 }
-export default App;
+
+const mapStateToProps = (state) => {
+    return {appDetails: state.appDetails}
+}
+
+export default connect(mapStateToProps, {
+    socketConnectT: socketConnectT
+})(App);

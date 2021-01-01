@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector} from "react-redux";
 import Paper from '@material-ui/core/Paper';
+import { sendAction} from "../../actions";
 import Grid from '@material-ui/core/Grid';
 import Temperature from "./Temperature";
 import CarOverview from "./CarOverview";
@@ -21,19 +23,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Climate() {
+    console.log("re-rendering")
+    const [driversTemp, setDriversTemp] = useState(0.0)
+    const dispatch = useDispatch()
+
     const classes = useStyles();
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDriversTemp(driversTemp => driversTemp + 1)
+        }, 50)
+        return () => clearInterval(interval);
+    }, [])
+
+    const action = (actionDetails) => {
+        dispatch(sendAction(actionDetails))
+        console.log(actionDetails)
+    }
+
+
 
     return (
         <div className={classes.root}>
             <Grid container justify={'center'} alignItems={'center'} spacing={3} direction={'row'}>
                 <Grid item xs={4}>
-                    <Temperature value={19.5} className={classes.paper} />
+                    <Temperature value={driversTemp} action={action} className={classes.paper} name={'driver'} />
                 </Grid>
                 <Grid item xs={4}>
                     <CarOverview />
                 </Grid>
                 <Grid item xs={4} >
-                    <Temperature value={21.5} className={classes.paper} />
+                    <Temperature value={21.5} className={classes.paper} action={action} name={'pass'}/>
                 </Grid>
             </Grid>
         </div>

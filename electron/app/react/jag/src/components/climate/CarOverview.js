@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     },
     imageContainer: {
         height: 230
+    },
+    largeIcon: {
+        fontSize: 100
     }
 }));
 

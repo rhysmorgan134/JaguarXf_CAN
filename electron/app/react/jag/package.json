@@ -24,6 +24,9 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^3.0.4",
     "typeface-roboto": "^1.1.13",
     "web-vitals": "^0.2.4",
     "yarn": "^1.22.10"
@@ -54,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10"
+    "@babel/core": "^7.12.10",
+    "electron-redux-devtools": "^0.3.4"
   }
 }
