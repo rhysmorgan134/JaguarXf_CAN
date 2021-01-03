@@ -5,7 +5,7 @@
       <paths name="iaPi">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/pi/jag/JaguarXf_CAN" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -6,6 +6,7 @@ import { sendAction} from "../../actions";
 import Grid from '@material-ui/core/Grid';
 import Temperature from "./Temperature";
 import CarOverview from "./CarOverview";
+import checkPage from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 function Climate() {
     console.log("re-rendering")
     const [driversTemp, setDriversTemp] = useState(0.0)
+    const pageTitle = 'climate'
+    const currentPage = ''
     const dispatch = useDispatch()
 
     const classes = useStyles();
@@ -33,7 +36,11 @@ function Climate() {
         const interval = setInterval(() => {
             setDriversTemp(driversTemp => driversTemp + 1)
         }, 100)
+        checkPage(pageTitle)
         return () => clearInterval(interval);
+
+        // if(pageTitle !== )
+
     }, [])
 
     const action = (actionDetails) => {

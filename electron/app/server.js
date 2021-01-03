@@ -1,8 +1,14 @@
-module.exports = function(window) {
     var express = require('express');
     var app = express();
     var server = require('http').createServer(app);
-    var io = require('socket.io')(server);
+    var io = require('socket.io')(server, {
+cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
+});
     var can = require('socketcan');
     var fs = require("fs");
     var temp = require("pi-temperature");
@@ -23,9 +29,9 @@ module.exports = function(window) {
 
     const changeWindowColor = (colour) => {
         console.log("changing colour to" + colour)
-        window.setBackgroundColor(colour);
-        window.blur();
-        window.focus();
+        //window.setBackgroundColor(colour);
+        //window.blur();
+        //window.focus();
     }
 
     //read in config JSON files, canMap defines messages in, can out defines commands to send out
@@ -43,9 +49,9 @@ module.exports = function(window) {
     let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor, robot);
 
     // const mainWindow = BrowserWindow.getCurrentWindow();
-    window.setBackgroundColor('#EEEEEE');
-    window.blur();
-    window.focus();
+    //window.setBackgroundColor('#EEEEEE');
+    //window.blur();
+    //window.focus();
 
     const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
 
@@ -169,9 +175,20 @@ module.exports = function(window) {
 //on socket connection
     io.on('connection', function (client) {
 
+        client.on('join', (data) => {
+            client.join(data.room)
+            io.emit('joining', data)
+        })
+
+        client.on('leave', (data) => {
+            client.leave(data.room)
+            io.emit('leaving', data)
+        })
+
         //on client action over socket
         client.on('action', (data) => {
-
+		console.log("ids are", outIds)
+		console.log("data received on action", data)
             //lookup in the canout json the matching data.type ie rearHeater, get the value and the byte
             value = outIds[data.type].val
             byte = outIds[data.type].byte
@@ -229,7 +246,7 @@ module.exports = function(window) {
         io.emit('trip', msInfo.dataObj.tripInfo);
 
         // io.emit('settings', settings);
-        io.emit('climate', msInfo.dataObj.climate);
+        io.to('climate').emit('climate', msInfo.dataObj.climate);
 
         io.emit('settings', msInfo.dataObj.settings);
 
@@ -254,6 +271,6 @@ module.exports = function(window) {
         });
         io.emit('info', info);
     }, 500)
-}
+
 
 

@@ -1,5 +1,12 @@
 import {socketConnectT} from "../actions";
-import {SOCKET_CONNECTED, SOCKET_CONNECT, SOCKET_ACTION, SOCKET_ENGINE, SOCKET_TRIP} from "../actions/types";
+import {
+    SOCKET_CONNECTED,
+    SOCKET_CONNECT,
+    SOCKET_ACTION,
+    SOCKET_ENGINE,
+    SOCKET_TRIP,
+    CURRENT_PAGE, LEAVE_PAGE, ROOM_JOINED
+} from "../actions/types";
 import io from "socket.io-client";
 
 const socketMiddleware = () => {
@@ -45,12 +52,30 @@ const socketMiddleware = () => {
                     //console.log('status', data)
                 })
 
+                socket.on('joining', (data) => {
+                    console.log("room joined", data.room)
+                    store.dispatch({type: ROOM_JOINED, payload: data.room})
+                })
+
+                socket.on('leaving', (data) => {
+                    console.log("room left", data.room)
+                })
+
                 socket.on('info', (data) => {
                     //console.log('info', data)
                 })
                 break;
+            case CURRENT_PAGE:
+                console.log("joining room", action.payload)
+                socket.emit('join', {room: action.payload})
+                break;
+            case LEAVE_PAGE:
+                console.log(io.socket)
+                console.log("leaving room", action.payload, socket)
+                socket.emit('leave', {room: action.payload})
+                break;
             case SOCKET_ACTION:
-                console.log("emitting action", action.payload);
+                console.log("emitting action", action);
                 socket.emit("action", {type: action.payload.actionName , func:action.payload.actionFunction});
                 break;
             // case SOCKET_ENGINE:

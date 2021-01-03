@@ -1,13 +1,21 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
+import { useDispatch, useSelector} from "react-redux";
+import checkPage from "../../utils";
 
-class VehicleInfo extends Component {
-    render() {
+function VehicleInfo() {
+
+    const pageTitle = 'vehicleInfo'
+
+    useEffect(() => {
+        checkPage(pageTitle)
+        // if(pageTitle !== )
+    }, [])
+
         return (
             <div>
                 Vehicle Info
             </div>
         );
-    }
 }
 
 export default VehicleInfo;
