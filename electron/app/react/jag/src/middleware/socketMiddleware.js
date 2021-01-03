@@ -1,5 +1,5 @@
 import {socketConnectT} from "../actions";
-import {SOCKET_CONNECTED, SOCKET_CONNECT, SOCKET_ACTION} from "../actions/types";
+import {SOCKET_CONNECTED, SOCKET_CONNECT, SOCKET_ACTION, SOCKET_ENGINE, SOCKET_TRIP} from "../actions/types";
 import io from "socket.io-client";
 
 const socketMiddleware = () => {
@@ -31,13 +31,14 @@ const socketMiddleware = () => {
                     store.dispatch({type: SOCKET_CONNECTED, payload:false})
                 })
 
-                socket.on('indicators', (data) => {
+                socket.on('engine', (data) => {
                     //console.log('indicators', data)
                     // onMessage(store)
+                    store.dispatch({type: SOCKET_ENGINE, payload:data})
                 })
 
                 socket.on('trip', (data) => {
-                    //console.log('trip', data)
+                    store.dispatch({type: SOCKET_TRIP, payload:data})
                 })
 
                 socket.on('status', (data) => {
@@ -49,9 +50,13 @@ const socketMiddleware = () => {
                 })
                 break;
             case SOCKET_ACTION:
-                console.log("emitting action", action.payload)
-                socket.emit("action", {type: action.payload.actionName , func:action.payload.actionFunction})
+                console.log("emitting action", action.payload);
+                socket.emit("action", {type: action.payload.actionName , func:action.payload.actionFunction});
                 break;
+            // case SOCKET_ENGINE:
+            //     console.log("engine info", action.payload);
+            // case SOCKET_TRIP:
+            //     console.log("trip info", action.payload);
             default:return next(action)
         }
     }

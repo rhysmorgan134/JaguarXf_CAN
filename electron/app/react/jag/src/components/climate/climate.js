@@ -32,7 +32,7 @@ function Climate() {
     useEffect(() => {
         const interval = setInterval(() => {
             setDriversTemp(driversTemp => driversTemp + 1)
-        }, 50)
+        }, 100)
         return () => clearInterval(interval);
     }, [])
 
