@@ -1,4 +1,14 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, globalShortcut, session } = require('electron')
+let installExtension = require('electron-devtools-installer')
+
+app.whenReady().then(() => {
+    installExtension(REDUX_DEVTOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+});
+
+//session.loadExtension(path.join(os.homedir(), '/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.6.4.2101_0'))
+
 
 function createWindow () {
     // Create the browser window.
@@ -11,9 +21,24 @@ function createWindow () {
         }
     })
 
+        //***//
+        globalShortcut.register('f5', function() {
+            console.log('f5 is pressed')
+            win.reload()
+        })
+        globalShortcut.register('CommandOrControl+R', function() {
+            console.log('CommandOrControl+R is pressed')
+            mainWindow.reload()
+        })
+
     //load the index.html from a url
     win.loadURL('http://localhost:3000');
-
+    installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
+    installExtension.default(installExtension.REDUX_DEVTOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err));
     // Open the DevTools.
     win.webContents.openDevTools()
 }

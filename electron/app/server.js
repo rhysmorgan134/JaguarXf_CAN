@@ -148,8 +148,8 @@ cors: {
             }
             var passT = (arr[7] - 128) / 2
             var drivT = arr[6] / 2
-            tempCar.passTempText = passT.toString() + '&#x2103'
-            tempCar.driverTempText = drivT.toString() + '&#x2103'
+            tempCar.passTempText = passT
+            tempCar.driverTempText = drivT
         }
     });
 
@@ -183,6 +183,10 @@ cors: {
         client.on('leave', (data) => {
             client.leave(data.room)
             io.emit('leaving', data)
+        })
+
+        client.on('newAction', (data) => {
+
         })
 
         //on client action over socket
@@ -241,21 +245,23 @@ cors: {
         out.id = 712
 
         //emit the indicators object over sockets to the client
-        io.emit('status', indicators);
+        //io.emit('status', indicators);
         //console.log('emitting')
-        io.emit('trip', msInfo.dataObj.tripInfo);
+        io.to('vehicleInfo').emit('trip', Object.assign(hsInfo.dataObj, msInfo.dataObj.tripInfo));
+        console.log('emitted trip', Object.assign(hsInfo.dataObj, msInfo.dataObj.tripInfo))
 
         // io.emit('settings', settings);
-        io.to('climate').emit('climate', msInfo.dataObj.climate);
+        io.to('climate').emit('climate', Object.assign(msInfo.dataObj.climate, tempCar));
+        io.to('climate').emit('climate', indicators)
 
-        io.emit('settings', msInfo.dataObj.settings);
+        io.to('settings').emit('settings', msInfo.dataObj.settings);
 
         //turn the canbus array to buffer object
         out.data = new Buffer(msgOut.data)
         // console.log(msgOut)
         // console.log(def)
 
-        io.emit('temp', tempCar)
+        io.to('climate').emit('temp', tempCar)
         //send the canbus message, commented out for now as not tested on vehicle
         //channel.send(out)
         //console.log(out)

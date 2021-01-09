@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
-        alignContent: 'center'
     },
     paper: {
         padding: theme.spacing(2),
@@ -25,19 +24,24 @@ const useStyles = makeStyles((theme) => ({
 
 function Climate() {
     console.log("re-rendering")
-    const [driversTemp, setDriversTemp] = useState(0.0)
     const pageTitle = 'climate'
-    const currentPage = ''
+    const details = useSelector(state => state.climate);
+    console.log(details)
+    const driversTemp = details.driverTempText;
+    const passengerTemp = details.passTempText;
+    const defrost = details.defrost;
+    const rearHeater = details.rearHeater;
+    const interiorTemp = details.interiorTemp;
+    const auto = details.auto;
+    const frontHeater = details.frontHeater;
+    const recirc = details.recirc;
+
     const dispatch = useDispatch()
 
     const classes = useStyles();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setDriversTemp(driversTemp => driversTemp + 1)
-        }, 100)
         checkPage(pageTitle)
-        return () => clearInterval(interval);
 
         // if(pageTitle !== )
 
@@ -52,15 +56,22 @@ function Climate() {
 
     return (
         <div className={classes.root}>
-            <Grid container justify={'center'} alignItems={'center'} spacing={3} direction={'row'}>
+            <Grid container justify={'flex-start'} alignItems={'center'} spacing={3} direction={'row'} height={300} >
                 <Grid item xs={4}>
                     <Temperature value={driversTemp} action={action} className={classes.paper} name={'driver'} />
                 </Grid>
                 <Grid item xs={4}>
-                    <CarOverview />
+                    <CarOverview
+                        rearHeater={rearHeater}
+                        frontHeat={frontHeater}
+                        auto={auto}
+                        defrost={defrost}
+                        interiorTemp={interiorTemp}
+                        recirc={recirc}
+                        />
                 </Grid>
                 <Grid item xs={4} >
-                    <Temperature value={21.5} className={classes.paper} action={action} name={'pass'}/>
+                    <Temperature value={passengerTemp} className={classes.paper} action={action} name={'pass'}/>
                 </Grid>
             </Grid>
         </div>

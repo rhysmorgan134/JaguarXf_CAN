@@ -5,7 +5,7 @@ import {
     SOCKET_ACTION,
     SOCKET_ENGINE,
     SOCKET_TRIP,
-    CURRENT_PAGE, LEAVE_PAGE, ROOM_JOINED
+    CURRENT_PAGE, LEAVE_PAGE, ROOM_JOINED, SOCKET_CLIMATE
 } from "../actions/types";
 import io from "socket.io-client";
 
@@ -32,6 +32,7 @@ const socketMiddleware = () => {
                     //onOpen(store)
                     console.log("connected!")
                     store.dispatch({type: SOCKET_CONNECTED, payload: true})
+                    socket.emit('join', {room: 'climate'})
                 })
 
                 socket.on('disconnected', () => {
@@ -39,17 +40,22 @@ const socketMiddleware = () => {
                 })
 
                 socket.on('engine', (data) => {
-                    //console.log('indicators', data)
+                    console.log('indicators', data)
                     // onMessage(store)
                     store.dispatch({type: SOCKET_ENGINE, payload:data})
                 })
 
                 socket.on('trip', (data) => {
+                    console.log('trip', console.log(data))
                     store.dispatch({type: SOCKET_TRIP, payload:data})
                 })
 
                 socket.on('status', (data) => {
-                    //console.log('status', data)
+                    console.log('status', data)
+                })
+
+                socket.on('settings', (data) => {
+                    console.log('status', data)
                 })
 
                 socket.on('joining', (data) => {
@@ -61,8 +67,9 @@ const socketMiddleware = () => {
                     console.log("room left", data.room)
                 })
 
-                socket.on('info', (data) => {
-                    //console.log('info', data)
+                socket.on('climate', (data) => {
+                    store.dispatch({type: SOCKET_CLIMATE, payload: data})
+                    console.log('climate', data)
                 })
                 break;
             case CURRENT_PAGE:
@@ -70,7 +77,6 @@ const socketMiddleware = () => {
                 socket.emit('join', {room: action.payload})
                 break;
             case LEAVE_PAGE:
-                console.log(io.socket)
                 console.log("leaving room", action.payload, socket)
                 socket.emit('leave', {room: action.payload})
                 break;

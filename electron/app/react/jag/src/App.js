@@ -8,7 +8,7 @@ import './App.css';
 import Nav from "./components/nav/Nav";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {createMuiTheme, CssBaseline, ThemeProvider} from "@material-ui/core"
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles, responsiveFontSizes} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import {socketConnectT} from "./actions";
 import {useComponentWillMount} from "./helpers/componetWillMountHelper";
@@ -41,7 +41,7 @@ function App({socketConnectT}) {
 
 
 
-    const theme = React.useMemo(
+    let theme = React.useMemo(
         () =>
             createMuiTheme({
                 palette: {
@@ -51,8 +51,7 @@ function App({socketConnectT}) {
                         paper: prefersDarkMode ? '#2e2e2e' : '#fafafa'
                     },
                     secondary: {
-                        main: '#3dedf4',
-                        dark: 'ff00ee'
+                        main: '#3dedf4', dark: 'ff00ee'
                     },
                     MuiIcon: {
                         root: {
@@ -63,6 +62,8 @@ function App({socketConnectT}) {
             }),
                 [prefersDarkMode]
     )
+
+    theme = responsiveFontSizes(theme);
 
     const connectSocket = () => {
         console.log("connecting socket")
