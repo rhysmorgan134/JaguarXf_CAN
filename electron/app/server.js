@@ -186,7 +186,10 @@ cors: {
         })
 
         client.on('newAction', (data) => {
-
+            console.log("newaction received", data)
+            if(data.bus === 'ms') {
+                msInfo.runAction(data.id, data.type, data.value)
+            }
         })
 
         //on client action over socket
@@ -248,7 +251,6 @@ cors: {
         //io.emit('status', indicators);
         //console.log('emitting')
         io.to('vehicleInfo').emit('trip', Object.assign(hsInfo.dataObj, msInfo.dataObj.tripInfo));
-        console.log('emitted trip', Object.assign(hsInfo.dataObj, msInfo.dataObj.tripInfo))
 
         // io.emit('settings', settings);
         io.to('climate').emit('climate', Object.assign(msInfo.dataObj.climate, tempCar));

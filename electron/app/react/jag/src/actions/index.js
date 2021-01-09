@@ -1,4 +1,4 @@
-import {CURRENT_PAGE, LEAVE_PAGE, SOCKET_ACTION, SOCKET_CONNECT} from "./types";
+import {CURRENT_PAGE, LEAVE_PAGE, MS_ACTION, SOCKET_ACTION, SOCKET_CONNECT} from "./types";
 
 export const socketConnectT = (host) => {
     console.log("dispatching connect")
@@ -7,6 +7,11 @@ export const socketConnectT = (host) => {
 
 export const sendAction =(actionDetails)=> {
     return {type: SOCKET_ACTION, payload: actionDetails}
+}
+
+export const sendMsAction = (actionDetails) => {
+    console.log("sending ms action in action")
+    return {type: MS_ACTION, payload: actionDetails}
 }
 
 export const leavePage = (page) => {

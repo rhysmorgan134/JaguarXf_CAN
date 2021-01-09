@@ -62,6 +62,7 @@ function Climate() {
                 </Grid>
                 <Grid item xs={4}>
                     <CarOverview
+                        action={action}
                         rearHeater={rearHeater}
                         frontHeat={frontHeater}
                         auto={auto}

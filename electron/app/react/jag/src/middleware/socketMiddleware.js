@@ -5,7 +5,7 @@ import {
     SOCKET_ACTION,
     SOCKET_ENGINE,
     SOCKET_TRIP,
-    CURRENT_PAGE, LEAVE_PAGE, ROOM_JOINED, SOCKET_CLIMATE
+    CURRENT_PAGE, LEAVE_PAGE, ROOM_JOINED, SOCKET_CLIMATE, MS_ACTION, SOCKET_SETTINGS
 } from "../actions/types";
 import io from "socket.io-client";
 
@@ -55,7 +55,7 @@ const socketMiddleware = () => {
                 })
 
                 socket.on('settings', (data) => {
-                    console.log('status', data)
+                    store.dispatch({type: SOCKET_SETTINGS, payload:data})
                 })
 
                 socket.on('joining', (data) => {
@@ -83,6 +83,10 @@ const socketMiddleware = () => {
             case SOCKET_ACTION:
                 console.log("emitting action", action);
                 socket.emit("action", {type: action.payload.actionName , func:action.payload.actionFunction});
+                break;
+            case MS_ACTION:
+                console.log("sending new Action", action.payload)
+                socket.emit('newAction', action.payload);
                 break;
             // case SOCKET_ENGINE:
             //     console.log("engine info", action.payload);

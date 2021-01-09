@@ -76,14 +76,14 @@ function App({socketConnectT}) {
             <CssBaseline />
             <Box className={classes.root} >
                 <HashRouter>
-                    <div className={`${classes.content}`}>
+                    <Box style={{height: '100vh', overflow: 'scroll'}} className={`${classes.content}`}>
                         <Switch>
                             <Route exact path="/" component={Climate}/>
                             <Route exact path="/climate" component={Climate}/>
                             <Route exact path="/vehicle" component={VehicleInfo}/>
                             <Route exact path="/settings" component={Settings}/>
                         </Switch>
-                    </div>
+                    </Box>
                     <Nav />
                 </HashRouter>
             </Box>

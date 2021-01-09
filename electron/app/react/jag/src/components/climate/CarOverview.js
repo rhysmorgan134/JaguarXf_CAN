@@ -38,13 +38,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CarOverview ({rearHeater,frontHeater,auto,defrost,interiorTemp,recirc}) {
+
+    const handleClick = (type) => {
+
+    }
+
     console.log(rearHeater, frontHeater, auto, defrost, interiorTemp, recirc)
     const classes = useStyles();
     return (
         <Grid container justify={'center'} alignItems={'center'} spacing={3} direction={'column'}>
+
             <Grid item grow={1} xs={12} className={classes.imageContainer} >
                 <Grid container justify={'center'} direction={'row'} spacing={1}>
-                    <Grid item xs={4} direction={'row'}>
+                    <Grid
+                        item
+                        xs={4}
+                        direction={'row'}
+                        onTouchStart={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'pressed'})}
+                        onTouchEnd={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'rel'})}
+                    >
                         <Button size={'large'}  fullWidth={true}>
                             <SvgIcon fontSize={'large'}>
                                 <Front/>
@@ -52,7 +64,14 @@ function CarOverview ({rearHeater,frontHeater,auto,defrost,interiorTemp,recirc})
                         </Button>
                         <div style={frontHeater > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
                     </Grid>
-                    <Grid item xs={4} direction={'row'}>
+
+                    <Grid
+                        item
+                        xs={4}
+                        direction={'row'}
+                        onTouchStart={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'pressed'})}
+                        onTouchEnd={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'rel'})}
+                    >
                         <Button size={'large'}  fullWidth={true}>
                             <SvgIcon  fontSize={'large'}>
                                 <Front/>
@@ -61,15 +80,35 @@ function CarOverview ({rearHeater,frontHeater,auto,defrost,interiorTemp,recirc})
                         <div style={defrost > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
                     </Grid>
                 </Grid>
+
                 <Grid container display={'flex'} direction={'row'} >
                     <Grid item xs={3}>
-                            <Button size={'large'}  fullWidth={true}>
-                                <SvgIcon fontSize={'large'}>
-                                    <Front />
-                                </SvgIcon>
-                            </Button>
-                            <div style={recirc > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
+                        <Box display={'flex'} flexDirection={'column'}>
+                            <Box
+                                onTouchStart={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'pressed'})}
+                                onTouchEnd={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'rel'})}
+                            >
+                                <Button size={'large'}  fullWidth={true}>
+                                    <SvgIcon fontSize={'large'}>
+                                        <Front />
+                                    </SvgIcon>
+                                </Button>
+                                <div style={recirc > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
+                            </Box>
+                            <Box
+                                onTouchStart={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'pressed'})}
+                                onTouchEnd={() => action({actionName: 'frontHeater' + 'Up', actionFunction: 'rel'})}
+                            >
+                                <Button size={'large'}  fullWidth={true}>
+                                    <SvgIcon fontSize={'large'}>
+                                        <Rear/>
+                                    </SvgIcon>
+                                </Button>
+                                <div style={rearHeater > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
+                            </Box>
+                        </Box>
                     </Grid>
+
                     <Grid item xs={6}>
                         <Card className={classes.image}>
                             <CardActionArea>
@@ -82,6 +121,7 @@ function CarOverview ({rearHeater,frontHeater,auto,defrost,interiorTemp,recirc})
                         </Card>
                     </Grid>
                     <Grid item xs={3}>
+
                         <Button size={'large'}  fullWidth={true}>
                             <SvgIcon fontSize={'large'}>
                                 <Rear />
@@ -90,14 +130,6 @@ function CarOverview ({rearHeater,frontHeater,auto,defrost,interiorTemp,recirc})
                         <div style={auto > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid item xs={3}>
-                <Button size={'large'}  fullWidth={true}>
-                    <SvgIcon fontSize={'large'}>
-                        <Rear/>
-                    </SvgIcon>
-                </Button>
-                <div style={rearHeater > 0? {height: '5px', backgroundColor: 'orange'} : {}}></div>
             </Grid>
             <Grid item xs={10}>
                 <Typography align={'center'} variant="caption" component="p" gutterBottom>Interior Temp<br />18°C</Typography>
