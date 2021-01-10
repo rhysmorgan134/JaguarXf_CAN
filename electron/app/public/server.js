@@ -182,6 +182,7 @@ app.get('/', function (req, res) {
     io.on('connection', function (client) {
 
         client.on('join', (data) => {
+	    console.log("client joining room: ", data.room)
             client.join(data.room)
             io.emit('joining', data)
         })

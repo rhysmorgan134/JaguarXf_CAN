@@ -26,7 +26,7 @@ const socketMiddleware = () => {
         switch (action.type) {
             case SOCKET_CONNECT:
                 console.log("connecting in middleware")
-                socket = io.connect('192.168.0.6:3000');
+                socket = io({transports: ['websocket'], upgrade: false}).connect('localhost:3000');
 
                 socket.on('connect', (data) => {
                     //onOpen(store)
@@ -35,7 +35,8 @@ const socketMiddleware = () => {
                     socket.emit('join', {room: 'climate'})
                 })
 
-                socket.on('disconnected', () => {
+                socket.on('disconnected', (reason) => {
+		    console.log("disconnected due to ", reason)
                     store.dispatch({type: SOCKET_CONNECTED, payload:false})
                 })
 
