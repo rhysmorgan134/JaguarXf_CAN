@@ -1,6 +1,6 @@
 const { app, BrowserWindow, globalShortcut, session } = require('electron')
 const path = require('path')
-
+const isDev = require('electron-is-dev')
 // let installExtension = require('electron-devtools-installer')
 
 // app.whenReady().then(() => {
@@ -39,7 +39,7 @@ function createWindow () {
         })
 
     //load the index.html from a url
-    win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`);
+    win.loadURL('http://localhost:3000');
     // installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
     //     .then((name) => console.log(`Added Extension:  ${name}`))
     //     .catch((err) => console.log('An error occurred: ', err));

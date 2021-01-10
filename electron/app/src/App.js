@@ -13,11 +13,11 @@ import Box from '@material-ui/core/Box';
 import {socketConnectT} from "./actions";
 import {useComponentWillMount} from "./helpers/componetWillMountHelper";
 
-const remote = window.require('electron').remote;
-;
+//const electron = window.require("electron");
 
 
-const {BrowserWindow,dialog,Menu} = remote;
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
