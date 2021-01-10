@@ -35,7 +35,11 @@ const socketMiddleware = () => {
                     socket.emit('join', {room: 'climate'})
                 })
 
-                socket.on('disconnected', (reason) => {
+                socket.on('error', (data) => {
+                    console.log("socket error", data)
+                })
+
+                socket.on('disconnect', (reason) => {
 		    console.log("disconnected due to ", reason)
                     store.dispatch({type: SOCKET_CONNECTED, payload:false})
                 })

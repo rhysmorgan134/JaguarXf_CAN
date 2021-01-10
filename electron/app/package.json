@@ -38,8 +38,8 @@
     "robotjs": "^0.6.0",
     "rpi-gpio": "^2.1.5",
     "serialport": "^8.0.7",
-    "socket.io": "^2.3.0",
-    "socket.io-client": "^3.0.4",
+    "socket.io": "^3.0.5",
+    "socket.io-client": "^3.0.5",
     "socketcan": "^2.5.0",
     "typeface-roboto": "^1.1.13",
     "wait-on": "^5.2.1",
@@ -53,7 +53,7 @@
     "test": "craco test",
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
-"start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": [

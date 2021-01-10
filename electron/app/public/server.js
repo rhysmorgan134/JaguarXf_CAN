@@ -180,6 +180,7 @@ app.get('/', function (req, res) {
 
 //on socket connection
     io.on('connection', function (client) {
+        console.log("client connected from: ", client.handshake.address)
 
         client.on('join', (data) => {
 	    console.log("client joining room: ", data.room)

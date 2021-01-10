@@ -80,7 +80,7 @@ function App({socketConnectT}) {
 
     const connectSocket = () => {
         console.log("connecting socket")
-        socketConnectT("192.168.0.3:3001")
+        socketConnectT("localhost:3000")
     }
     useComponentWillMount(connectSocket)
 
