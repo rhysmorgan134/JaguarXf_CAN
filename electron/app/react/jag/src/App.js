@@ -58,6 +58,19 @@ function App({socketConnectT}) {
                             fontSize: '100px',
                         },
                     },
+                },
+                overrides: {
+                    MuiCssBaseline: {
+                        '@global': {
+                            '*': {
+                                'scrollbar-width': 'thin',
+                            },
+                            '*::-webkit-scrollbar': {
+                                width: '4px',
+                                height: '4px',
+                            }
+                        }
+                    }
                 }
             }),
                 [prefersDarkMode]
