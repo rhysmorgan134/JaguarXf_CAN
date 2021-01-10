@@ -1,11 +1,13 @@
 const { app, BrowserWindow, globalShortcut, session } = require('electron')
-let installExtension = require('electron-devtools-installer')
+const path = require('path')
 
-app.whenReady().then(() => {
-    installExtension(REDUX_DEVTOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
-});
+// let installExtension = require('electron-devtools-installer')
+
+// app.whenReady().then(() => {
+//     installExtension(REDUX_DEVTOOLS)
+//         .then((name) => console.log(`Added Extension:  ${name}`))
+//         .catch((err) => console.log('An error occurred: ', err));
+// });
 
 //session.loadExtension(path.join(os.homedir(), '/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.6.4.2101_0'))
 
@@ -15,16 +17,21 @@ function createWindow () {
     const win = new BrowserWindow({
         width: 800,
         height: 480,
+        frame: false,
+        kiosk: true,
+
         webPreferences: {
             nodeIntegration: true,
-            enableRemoteModule:true
+            enableRemoteModule:true,
+
         }
     })
 
+    require('./server')(win);
         //***//
         globalShortcut.register('f5', function() {
             console.log('f5 is pressed')
-            win.reload()
+            win.webContents.openDevTools()
         })
         globalShortcut.register('CommandOrControl+R', function() {
             console.log('CommandOrControl+R is pressed')
@@ -32,15 +39,15 @@ function createWindow () {
         })
 
     //load the index.html from a url
-    win.loadURL('http://localhost:3000');
-    installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
-    installExtension.default(installExtension.REDUX_DEVTOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
+    win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`);
+    // installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
+    //     .then((name) => console.log(`Added Extension:  ${name}`))
+    //     .catch((err) => console.log('An error occurred: ', err));
+    // installExtension.default(installExtension.REDUX_DEVTOOLS)
+    //     .then((name) => console.log(`Added Extension:  ${name}`))
+    //     .catch((err) => console.log('An error occurred: ', err));
     // Open the DevTools.
-    win.webContents.openDevTools()
+    //
 }
 
 // This method will be called when Electron has finished
