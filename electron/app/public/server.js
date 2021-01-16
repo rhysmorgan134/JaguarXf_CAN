@@ -23,10 +23,12 @@ module.exports = function(window) {
     const home = new Gpio(5, 'in', 'falling', {debounceTimeout: 100});
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
+    const path = require('path')
     var serialPort = new SerialPort('/dev/SWC', {
         baudRate: 9600
     });
 
+   app.use(express.static(__dirname));
 
     const changeWindowColor = (colour) => {
         console.log("changing colour to" + colour)
@@ -161,6 +163,10 @@ module.exports = function(window) {
         res.json({theme: !(msInfo.utils.isNight)});
     });
 
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 
 //can bus channel start
     channel.start();
@@ -174,8 +180,10 @@ module.exports = function(window) {
 
 //on socket connection
     io.on('connection', function (client) {
+        console.log("client connected from: ", client.handshake.address)
 
         client.on('join', (data) => {
+	    console.log("client joining room: ", data.room)
             client.join(data.room)
             io.emit('joining', data)
         })

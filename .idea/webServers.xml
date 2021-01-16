@@ -2,12 +2,11 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="95458fea-747c-406a-867f-474aa7e2e811" name="iaPi" url="http://192.168.0.92">
-        <fileTransfer host="192.168.0.92" port="22" rootFolder="/home/pi/Documents/JaguarXf_CAN" accessType="SFTP">
+      <webServer id="95458fea-747c-406a-867f-474aa7e2e811" name="iaPi" url="http://192.168.0.6">
+        <fileTransfer accessType="SFTP" host="192.168.0.6" port="22" sshConfigId="da5742e9-38b8-43bf-aa55-e9d47d52c992" sshConfig="iaPi">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
-          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>
