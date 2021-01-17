@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
+  "proxy": "http://localhost:3000",
   "homepage": "http://localhost:3000/",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -53,7 +54,8 @@
     "test": "craco test",
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none PORT=3001 yarn react-start\" \"wait-on http://localhost:3001 && electron .\"",
+    "temp": "electron ."
   },
   "eslintConfig": {
     "extends": [

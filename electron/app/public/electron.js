@@ -27,7 +27,7 @@ function createWindow () {
         }
     })
 
-    require('./server')(win);
+    require('./server')(win, isDev);
         //***//
         globalShortcut.register('f5', function() {
             console.log('f5 is pressed')
@@ -35,19 +35,19 @@ function createWindow () {
         })
         globalShortcut.register('CommandOrControl+R', function() {
             console.log('CommandOrControl+R is pressed')
-            mainWindow.reload()
+            win.reload()
         })
 
     //load the index.html from a url
     win.loadURL('http://localhost:3000');
-    // installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
+  //   installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
     //     .then((name) => console.log(`Added Extension:  ${name}`))
-    //     .catch((err) => console.log('An error occurred: ', err));
-    // installExtension.default(installExtension.REDUX_DEVTOOLS)
-    //     .then((name) => console.log(`Added Extension:  ${name}`))
-    //     .catch((err) => console.log('An error occurred: ', err));
-    // Open the DevTools.
-    //
+      //   .catch((err) => console.log('An error occurred: ', err));
+     //installExtension.default(installExtension.REDUX_DEVTOOLS)
+     //    .then((name) => console.log(`Added Extension:  ${name}`))
+     //    .catch((err) => console.log('An error occurred: ', err));
+     //Open the DevTools.
+    
 }
 
 // This method will be called when Electron has finished

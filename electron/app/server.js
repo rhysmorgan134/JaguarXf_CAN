@@ -23,9 +23,15 @@ module.exports = function(window) {
     const home = new Gpio(5, 'in', 'falling', {debounceTimeout: 100});
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
-    var serialPort = new SerialPort('/dev/SWC', {
-        baudRate: 9600
-    });
+    
+    try {
+        var serialPort = new SerialPort('/dev/SWC', {
+            baudRate: 9600
+        });
+    } catch {
+        console.log("SWC not detected")
+	var serialPort = new SerialPort('/dev/ttyAMA0', {baudRate: 9600})
+    }
 
 
     const changeWindowColor = (colour) => {

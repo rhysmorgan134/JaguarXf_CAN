@@ -1,4 +1,4 @@
-module.exports = function(window) {
+module.exports = function(window, dev) {
     var express = require('express');
     var app = express();
     var server = require('http').createServer(app);
@@ -24,11 +24,19 @@ module.exports = function(window) {
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
     const path = require('path')
-    var serialPort = new SerialPort('/dev/SWC', {
-        baudRate: 9600
-    });
-
-   app.use(express.static(__dirname));
+   
+    if(dev) {
+        var serialPort = new SerialPort('/dev/ttyAMA0')
+    } else {
+        var serialPort = new SerialPort('/dev/SWC', {
+            baudRate: 9600
+        })
+    }
+   if(dev) {
+	app.use(express.static(path.join(__dirname, '../build/')))
+   } else {
+        app.use(express.static(__dirname));
+   }
 
     const changeWindowColor = (colour) => {
         console.log("changing colour to" + colour)
@@ -164,7 +172,11 @@ module.exports = function(window) {
     });
 
 app.get('/', function (req, res) {
+  if(dev) {
+	res.sendFile(path.join(__dirname, '../build/index.html'))
+} else {
   res.sendFile(path.join(__dirname, 'index.html'));
+}
 });
 
 
