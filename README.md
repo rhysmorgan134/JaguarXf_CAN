@@ -1,7 +1,7 @@
 # Jaguar XF Canbus Decoding/linux integration
 
 This project is designed to replace the integrated touchscreen in the X250 Jaguar XF. This app is designed to be used with an android auto
- wrapper (I recommend [intelligent auto](https://github.com/rsjudka/intelligent-auto))
+ wrapper (I recommend [intelligent auto](https://github.com/openDsh/dash))
  
  The latest video can be found here [XF CAN example](https://youtu.be/o7TGF2G8eGw)
 
@@ -46,7 +46,7 @@ Bring up the can0 interface
 
 ```
 sudo /sbin/ip link set can0 up type can bitrate 125000 //highspeed can for engine comms is 500000 baud
-sudo /sbin/ip link set can0 up type can bitrate 500000
+sudo /sbin/ip link set can1 up type can bitrate 500000
 ```
 
 To allow the CAN channels to come up on boot, modify rc.local
@@ -57,7 +57,7 @@ Paste before the end
 
 ```
 sudo /sbin/ip link set can0 up type can bitrate 125000
-sudo /sbin/ip link set can0 up type can bitrate 500000
+sudo /sbin/ip link set can1 up type can bitrate 500000
 ```
 
 ## Wiring the connector
@@ -75,7 +75,8 @@ ifconfig
 you should see an interface called can0, if not re run this command 
 
 ```
-sudo /sbin/ip link set can0 up type can bitrate 125000
+sudo /sbin/ip link set can1 up type can bitrate 125000
+sudo /sbin/ip link set can1 up type can bitrate 125000
 ```
 
 to test data run 
