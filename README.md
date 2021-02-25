@@ -62,7 +62,7 @@ sudo /sbin/ip link set can1 up type can bitrate 500000
 
 ## Wiring the connector
 
-To communicate to the canbus through the obd2 port, you need to solder two connections to the obd plug, one will go on pin 3 (CAN High) the other will go to pin 11 (CAN Low), these then wire to the corresponding terminal on the piHAT, ensure the polarity is correct and the pins are correct.
+To communicate to the canbus through the obd2 port, you need to solder two connections to the obd plug, one will go on pin 3 (CAN High) the other will go to pin 11 (CAN Low) for medium speed, these then wire to the corresponding terminal on the piHAT, ensure the polarity is correct and the pins are correct.
 
 ## Receiving data
 
