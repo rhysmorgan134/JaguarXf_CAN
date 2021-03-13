@@ -10,12 +10,13 @@ module.exports = function(window, dev) {
             credentials: true
         }
     });
+    var spawn = require('child_process').spawn;
+    var Dash = require('dash-socket-api');
     var can = require('socketcan');
     var fs = require("fs");
     var temp = require("pi-temperature");
     var Gpio = require("onoff").Gpio;
-    var robot = require("robotjs");
-
+    var FFMPEG = require('./Utils/ffmpeg')
     var {exec} = require('child_process');
     var SerialPort = require('serialport');
     const Readline = require('@serialport/parser-readline');
@@ -24,7 +25,10 @@ module.exports = function(window, dev) {
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
     const path = require('path')
-   
+    const camera = new FFMPEG();
+    process.on('sigkill', () => {
+        process.kill(camera.getPID())
+    });
     if(dev) {
         var serialPort = new SerialPort('/dev/ttyAMA0')
     } else {
@@ -45,6 +49,8 @@ module.exports = function(window, dev) {
         //window.focus();
     }
 
+   const dash = new Dash('localhost', 54545);
+
     //read in config JSON files, canMap defines messages in, can out defines commands to send out
     console.log(__dirname)
     var canIds = fs.readFileSync(__dirname + "/resources/canMap.json");
@@ -57,7 +63,7 @@ module.exports = function(window, dev) {
     let hsInfo = new HsInfo();
 
     const MsInfo = require('./modules/mediumSpeed/MsInfo');
-    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor, robot);
+    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor, dash);
 
     // const mainWindow = BrowserWindow.getCurrentWindow();
     //window.setBackgroundColor('#EEEEEE');
@@ -65,7 +71,6 @@ module.exports = function(window, dev) {
     //window.focus();
 
     const parser = serialPort.pipe(new Readline({delimiter: '\r\n'}))
-
 
 //default array to use as the buffer to send can messages when no new changes
     var def = [203, 0, 0, 0, 0, 0, 127, 127];
@@ -128,9 +133,8 @@ module.exports = function(window, dev) {
     });
 
     home.watch((err, value) => {
-        robot.typeString('h');
+        dash.cyclePage()
     });
-
 
 // create listener for all can bus messages
     channel.addListener("onMessage", function (msg) {
@@ -258,7 +262,9 @@ app.get('/', function (req, res) {
 
     })
 
-
+    dash.on("modeChange", () => {
+        io.to('general').emit('general', msInfo.dataObj.mode)
+    })
     setInterval(() => {
         //create output object for the canbus message
         var out = {}
@@ -277,6 +283,7 @@ app.get('/', function (req, res) {
         io.to('climate').emit('climate', indicators)
 
         io.to('settings').emit('settings', msInfo.dataObj.settings);
+        //io.to('general').emit('general', msInfo.dataObj.mode)
 
         //turn the canbus array to buffer object
         out.data = new Buffer(msgOut.data)

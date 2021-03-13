@@ -18,12 +18,12 @@
     "add": "^2.0.6",
     "concurrently": "^5.3.0",
     "customize-cra": "^1.0.0",
+    "dash-socket-api": "^0.1.2",
     "electron-is-dev": "^1.2.0",
     "express": "^4.17.1",
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^5.0.1",
     "minimist": ">=1.2.3",
-    "nodemon": "^1.19.4",
     "onoff": "^5.0.0",
     "or": "^0.2.0",
     "pi-temperature": "^2.1.0",
@@ -36,7 +36,6 @@
     "react-scripts": "4.0.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "robotjs": "^0.6.0",
     "rpi-gpio": "^2.1.5",
     "serialport": "^8.0.7",
     "socket.io": "^3.0.5",
@@ -84,6 +83,7 @@
     "electron": "^11.1.1",
     "electron-devtools-installer": "^3.1.1",
     "electron-redux-devtools": "^0.3.4",
-    "electron-builder": "^22.9.1"
+    "electron-builder": "^22.9.1",
+    "nodemon": "^1.19.4"
   }
 }

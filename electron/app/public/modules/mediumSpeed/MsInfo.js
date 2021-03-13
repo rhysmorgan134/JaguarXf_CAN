@@ -5,14 +5,16 @@ const Id40 = require('./40');
 const Id72 = require('./72');
 const Id360 = require('./360');
 const Utils = require('./Utils');
+const EventEmitter = require('events')
 
-class MsInfo {
-    constructor(canIds, outIds, dayGpio, nightGpio, exec, win, robot) {
+class MsInfo extends EventEmitter{
+    constructor(canIds, outIds, dayGpio, nightGpio, exec, win, dash) {
+        super()
         this.bus = 'ms';
         this.canIds = canIds;
         this.outIds = outIds;
         this.IDs = [968, 904, 680, 40, 360, 72];
-        this.robot = robot;
+        this.dash = dash;
         this.data = {
             tripInfo: {
                 tripDistance: {
@@ -39,6 +41,9 @@ class MsInfo {
             settings: {
 
             },
+            mode: {
+                dark: false
+            },
             brightness: {
                 rawLightResistence: 0,
                 adjustedLight: 255,
@@ -50,12 +55,18 @@ class MsInfo {
                 interiorTemp: 0
             }
         };
-        this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win);
+        this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win, dash);
+        this.utils.on("Light", () => {
+            this.data.mode.dark = false
+        });
+        this.utils.on("Dark", () => {
+            this.data.mode.dark = true
+        })
         this.IdModules = {
             Id968: new Id968(),
             Id904: new Id904(),
             Id680: new Id680(this.canIds, this.outIds),
-            Id40: new Id40(this.utils.brightnessValues, exec, this.robot),
+            Id40: new Id40(this.utils.brightnessValues, exec, this.dash),
             Id360: new Id360(),
             Id72: new Id72()
         }

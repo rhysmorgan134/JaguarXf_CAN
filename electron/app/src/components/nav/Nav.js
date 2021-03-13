@@ -23,7 +23,6 @@ class Nav extends Component {
     };
 
     render() {
-        console.log(this.props)
         const { classes } = this.props;
         return (
             <BottomNavigation value={this.state.currentNav} onChange={this.navChange} className={classes.root}>

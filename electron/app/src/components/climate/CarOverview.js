@@ -43,7 +43,6 @@ function CarOverview ({rearHeater,frontHeater,auto,defrost,interiorTemp,recirc, 
 
     }
 
-    console.log(rearHeater, frontHeater, auto, defrost, interiorTemp, recirc)
     const classes = useStyles();
     return (
         <Grid container justify={'center'} alignItems={'center'} spacing={3} direction={'column'}>

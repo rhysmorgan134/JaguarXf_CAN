@@ -1,5 +1,8 @@
-class Utils {
-    constructor(brightnessValues, getValues, dayGpio, nightGpio, exec, win){ //, exec, win, test
+const EventEmitter = require('events')
+
+class Utils extends EventEmitter {
+    constructor(brightnessValues, getValues, dayGpio, nightGpio, exec, win, dash){ //, exec, win, test
+        super()
         this.brightnessValues = getValues;
         this.dayGpio = dayGpio;
         this.nightGpio = nightGpio;
@@ -9,27 +12,36 @@ class Utils {
         // this.nightGpio = nightGpio;
         // this.exec = exec;
         this.isNight = true;
+        this.dash = dash;
 
         setInterval(this.checkDayNight.bind(this), 100);
         setInterval(this.adjustAmbient.bind(this), 500);
+        setInterval(() => {
+            let dashMode = this.dash.mode() === 'Dark' ? true : false
+
+            console.log(dashMode)
+            if(dashMode !== this.isNight) {
+                if(this.isNight) {
+                    this.dash.mode('Dark')
+                    this.emit("Dark")
+                } else {
+                    this.dash.mode('Light')
+                    this.emit("Light")
+                }
+            }
+            }, 1000)
 
     }
 
     checkDayNight() {
         if(this.brightnessValues.rawLightResistance > 0 && this.isNight === false) {
-            this.nightGpio.writeSync(1);
-            this.nightGpio.writeSync(0);
-            this.win('#121212');
-            // this.win.blur();
-            // this.win.focus();
+            this.dash.mode('Dark')
             console.log("Changed to night");
             this.isNight = true;
+            this.emit("Dark")
         } else if (this.brightnessValues.rawLightResistance === 0 && this.isNight === true){
-            this.dayGpio.writeSync(1);
-            this.dayGpio.writeSync(0);
-            this.win('#EEEEEE');
-            // this.win.blur();
-            // this.win.focus();
+            this.dash.mode('Light')
+            this.emit("Light")
             console.log("Changed to day");
             this.isNight = false;
         }

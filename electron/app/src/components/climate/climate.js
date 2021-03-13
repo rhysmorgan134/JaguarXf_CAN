@@ -23,10 +23,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Climate() {
-    console.log("re-rendering")
     const pageTitle = 'climate'
     const details = useSelector(state => state.climate);
-    console.log(details)
     const driversTemp = details.driverTempText;
     const passengerTemp = details.passTempText;
     const defrost = details.defrost;
@@ -49,7 +47,6 @@ function Climate() {
 
     const action = (actionDetails) => {
         dispatch(sendAction(actionDetails))
-        console.log(actionDetails)
     }
 
 

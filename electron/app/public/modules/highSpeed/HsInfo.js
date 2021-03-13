@@ -1,11 +1,12 @@
 var Id217 = require('./217');
 var Id953 = require('./953');
 var Id153 = require('./153');
+var Id377 = require('./377.js');
 
 class HsInfo {
     constructor() {
         this.bus = 'hs';
-        this.IDs = [217, 953, 153];
+        this.IDs = [217, 953, 153, 377];
         this.data = {
             coolant: 0,
             oil: 0,
@@ -15,7 +16,8 @@ class HsInfo {
         this.IdModules = {
             Id217: new Id217(),
             Id953: new Id953(),
-            Id153: new Id153()
+            Id153: new Id153(),
+            Id377: new Id377()
         }
     }
 
@@ -32,8 +34,6 @@ class HsInfo {
             //console.log(this.data);
         }
     }
-
-
 
 }
 

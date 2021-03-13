@@ -16,7 +16,6 @@ function Settings() {
     }, [])
 
     const handleChange = (event) => {
-        console.log("toggle change", {id: 680, type: event.target.name, value: event.target.checked})
         dispatch(sendMsAction({bus:'ms', id: 680, type: event.target.name, value: event.target.checked}));
     };
 

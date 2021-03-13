@@ -2,7 +2,6 @@ import React from 'react'
 import {Box, Typography, LinearProgress, withStyles} from "@material-ui/core";
 
 const DataBoxSingleLine = ({data}) => {
-    console.log(data)
 
     return (
         <div>

@@ -35,9 +35,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function App({socketConnectT}) {
+function App({socketConnectT, appDetails}) {
+
     const classes = useStyles();
-    const prefersDarkMode =  false//useMediaQuery('(prefers-color-scheme: dark)')
+    const prefersDarkMode =  appDetails.dark//useMediaQuery('(prefers-color-scheme: dark)')
 
 
 
@@ -79,7 +80,6 @@ function App({socketConnectT}) {
     theme = responsiveFontSizes(theme);
 
     const connectSocket = () => {
-        console.log("connecting socket")
         socketConnectT("localhost:3000")
     }
     useComponentWillMount(connectSocket)
