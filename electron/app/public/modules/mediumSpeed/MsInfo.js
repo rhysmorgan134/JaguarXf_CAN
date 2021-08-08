@@ -8,13 +8,12 @@ const Utils = require('./Utils');
 const EventEmitter = require('events')
 
 class MsInfo extends EventEmitter{
-    constructor(canIds, outIds, dayGpio, nightGpio, exec, win, dash) {
+    constructor(canIds, outIds, dayGpio, nightGpio, exec, win) {
         super()
         this.bus = 'ms';
         this.canIds = canIds;
         this.outIds = outIds;
         this.IDs = [968, 904, 680, 40, 360, 72];
-        this.dash = dash;
         this.data = {
             tripInfo: {
                 tripDistance: {
@@ -55,7 +54,7 @@ class MsInfo extends EventEmitter{
                 interiorTemp: 0
             }
         };
-        this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win, dash);
+        this.utils = new Utils(this.data.brightness, this.brightnessValues, dayGpio, nightGpio, exec, win);
         this.utils.on("Light", () => {
             this.data.mode.dark = false
         });
@@ -66,7 +65,7 @@ class MsInfo extends EventEmitter{
             Id968: new Id968(),
             Id904: new Id904(),
             Id680: new Id680(this.canIds, this.outIds),
-            Id40: new Id40(this.utils.brightnessValues, exec, this.dash),
+            Id40: new Id40(this.utils.brightnessValues, exec),
             Id360: new Id360(),
             Id72: new Id72()
         }

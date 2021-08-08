@@ -12,6 +12,7 @@ import {makeStyles, responsiveFontSizes} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import {socketConnectT} from "./actions";
 import {useComponentWillMount} from "./helpers/componetWillMountHelper";
+import carplay from "./components/carplay/carplay";
 
 //const electron = window.require("electron");
 
@@ -39,7 +40,7 @@ function App({socketConnectT, appDetails}) {
 
     const classes = useStyles();
     const prefersDarkMode =  appDetails.dark//useMediaQuery('(prefers-color-scheme: dark)')
-
+    console.log(appDetails)
 
 
     let theme = React.useMemo(
@@ -92,12 +93,13 @@ function App({socketConnectT, appDetails}) {
                     <Box style={{height: '100vh', overflow: 'scroll'}} className={`${classes.content}`}>
                         <Switch>
                             <Route exact path="/" component={Climate}/>
+                            <Route exact path='/carplay' component={carplay} />
                             <Route exact path="/climate" component={Climate}/>
                             <Route exact path="/vehicle" component={VehicleInfo}/>
                             <Route exact path="/settings" component={Settings}/>
                         </Switch>
                     </Box>
-                    <Nav />
+                    {appDetails.currentPage==='carplay' ? <div></div> : <Nav />}
                 </HashRouter>
             </Box>
         </ThemeProvider>

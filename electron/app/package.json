@@ -10,6 +10,7 @@
     "@babel/plugin-transform-react-jsx": "^7.12.12",
     "@babel/preset-react": "^7.12.10",
     "@craco/craco": "^6.0.0",
+    "@cycjimmy/jsmpeg-player": "^5.0.1",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.4",
@@ -24,6 +25,7 @@
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^5.0.1",
     "minimist": ">=1.2.3",
+    "node-carplay": "^1.0.7",
     "onoff": "^5.0.0",
     "or": "^0.2.0",
     "pi-temperature": "^2.1.0",
@@ -54,7 +56,7 @@
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
     "start": "concurrently \"cross-env BROWSER=none PORT=3001 yarn react-start\" \"wait-on http://localhost:3001 && electron .\"",
-    "temp": "electron ."
+    "temp": "electron . --no-sandbox"
   },
   "eslintConfig": {
     "extends": [
@@ -81,9 +83,10 @@
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "electron": "^11.1.1",
-    "electron-devtools-installer": "^3.1.1",
-    "electron-redux-devtools": "^0.3.4",
     "electron-builder": "^22.9.1",
+    "electron-devtools-installer": "^3.1.1",
+    "electron-rebuild": "^2.3.5",
+    "electron-redux-devtools": "^0.3.4",
     "nodemon": "^1.19.4"
   }
 }

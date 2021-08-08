@@ -10,13 +10,10 @@ module.exports = function(window, dev) {
             credentials: true
         }
     });
-    var spawn = require('child_process').spawn;
-    var Dash = require('dash-socket-api');
     var can = require('socketcan');
     var fs = require("fs");
     var temp = require("pi-temperature");
     var Gpio = require("onoff").Gpio;
-    var FFMPEG = require('./Utils/ffmpeg')
     var {exec} = require('child_process');
     var SerialPort = require('serialport');
     const Readline = require('@serialport/parser-readline');
@@ -25,7 +22,6 @@ module.exports = function(window, dev) {
     const lights = new Gpio(22, 'out');
     const noLights = new Gpio(6, 'out');
     const path = require('path')
-    const camera = new FFMPEG();
     process.on('sigkill', () => {
         process.kill(camera.getPID())
     });
@@ -49,8 +45,6 @@ module.exports = function(window, dev) {
         //window.focus();
     }
 
-   const dash = new Dash('localhost', 54545);
-
     //read in config JSON files, canMap defines messages in, can out defines commands to send out
     console.log(__dirname)
     var canIds = fs.readFileSync(__dirname + "/resources/canMap.json");
@@ -63,7 +57,7 @@ module.exports = function(window, dev) {
     let hsInfo = new HsInfo();
 
     const MsInfo = require('./modules/mediumSpeed/MsInfo');
-    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor, dash);
+    let msInfo = new MsInfo(canIds, outIds, noLights, lights, exec, changeWindowColor);
 
     // const mainWindow = BrowserWindow.getCurrentWindow();
     //window.setBackgroundColor('#EEEEEE');
@@ -262,9 +256,6 @@ app.get('/', function (req, res) {
 
     })
 
-    dash.on("modeChange", () => {
-        io.to('general').emit('general', msInfo.dataObj.mode)
-    })
     setInterval(() => {
         //create output object for the canbus message
         var out = {}

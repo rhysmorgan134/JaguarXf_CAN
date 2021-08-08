@@ -1,6 +1,9 @@
-const { app, BrowserWindow, globalShortcut, session } = require('electron')
+const { app, BrowserWindow, globalShortcut, session, ipcMain } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
+const Ws = require('./Ws')
+const ws = Ws.ws()
+const Carplay = require('node-carplay')
 // let installExtension = require('electron-devtools-installer')
 
 // app.whenReady().then(() => {
@@ -23,7 +26,8 @@ function createWindow () {
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule:true,
-
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: false
         }
     })
 
@@ -37,6 +41,40 @@ function createWindow () {
             console.log('CommandOrControl+R is pressed')
             win.reload()
         })
+    let size = win.getSize()
+    const config = {
+        dpi: 240,
+        nightMode: 0,
+        hand: 0,
+        boxName: 'nodePlay',
+        width: size[0],
+        height: size[1],
+        fps: 30,
+    }
+    const carplay = new Carplay(config)
+    carplay.on('status', (data) => {
+        if(data.status) {
+            win.webContents.send('plugged')
+        } else {
+            win.webContents.send('unplugged')
+        }
+        console.log("data received", data)
+
+    })
+    carplay.on('quit', () => {
+        win.webContents.send('quit')
+    })
+    ipcMain.on('click', (event, data) => {
+        carplay.sendTouch(data.type, data.x, data.y)
+        console.log(data.type, data.x, data.y)
+    })
+    ipcMain.on('statusReq', (event, data) => {
+        if(carplay.getStatus()) {
+            win.webContents.send('plugged')
+        } else {
+            win.webContents.send('unplugged')
+        }
+    })
 
     //load the index.html from a url
     win.loadURL('http://localhost:3000');

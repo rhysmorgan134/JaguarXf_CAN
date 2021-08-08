@@ -1,5 +1,5 @@
 class Id40 {
-    constructor(currentBrightness, exec, dash) {
+    constructor(currentBrightness, exec) {
         this.data = {
             brightness: {
                 rawLightResistance: 0,
@@ -12,7 +12,6 @@ class Id40 {
         this.prevGear = 0;
         this.currentBrightness = 0;
         this.exec = exec;
-        this.dash = dash;
     }
 
     parseMessage = (message, Id) => {
@@ -27,7 +26,7 @@ class Id40 {
         let gear = arr[4];
         if(!(this.prevGear === gear)) {
             if(this.prevGear === 1) {
-                this.dash.page('Android Auto');
+                // this.dash.page('Android Auto');
             }
             if (gear === 0) {
                 console.log("in Park");
@@ -39,7 +38,7 @@ class Id40 {
                         console.log("in reverse");
                         this.data.gear = "reverse";
                         this.prevGear = gear;
-                        this.dash.page('Camera');
+                        // this.dash.page('Camera');
                         break;
                     case gear & 2:
                         console.log("in neutral");
