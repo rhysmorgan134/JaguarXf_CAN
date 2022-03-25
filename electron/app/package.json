@@ -23,7 +23,7 @@
     "express": "^4.17.1",
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^5.0.1",
-    "minimist": ">=1.2.3",
+    "minimist": ">=1.2.6",
     "onoff": "^5.0.0",
     "or": "^0.2.0",
     "pi-temperature": "^2.1.0",
