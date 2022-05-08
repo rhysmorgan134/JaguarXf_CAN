@@ -4,6 +4,8 @@ This project is designed to replace the integrated touchscreen in the X250 Jagua
  wrapper (I recommend [intelligent auto](https://github.com/openDsh/dash))
  
  The latest video can be found here [XF CAN example](https://youtu.be/o7TGF2G8eGw)
+ 
+ <a href="https://www.buymeacoffee.com/rhysm" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>   
 
 ## Hardware
 
